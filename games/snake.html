@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Space Worm — A cosmic snake game in Space Arcade!">
+  <title>Space Worm — Space Arcade</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/spaceship.svg">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div id="starfield"></div>
+
+  <a href="../index.html" class="back-btn" id="back-btn">← Arcade</a>
+
+  <div class="page-content game-page">
+    <div class="game-header">
+      <h1>Space Worm</h1>
+    </div>
+    <div class="game-hud">
+      <div>Score: <span class="value" id="score">0</span></div>
+      <div>Best: <span class="value" id="high-score">0</span></div>
+    </div>
+    <div class="game-canvas-wrap">
+      <canvas id="game-canvas" width="400" height="400"></canvas>
+    </div>
+    <p class="game-controls-hint">
+      Use <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to move
+    </p>
+  </div>
+
+  <!-- Start Overlay -->
+  <div class="game-overlay" id="start-overlay">
+    <div class="overlay-title">Space Worm</div>
+    <p class="overlay-score">Collect the stars, grow your worm! ⭐</p>
+    <div class="overlay-buttons">
+      <button class="btn btn-primary" id="start-btn">Start Mission</button>
+    </div>
+  </div>
+
+  <!-- Game Over Overlay -->
+  <div class="game-overlay hidden" id="gameover-overlay">
+    <div class="overlay-title">Game Over</div>
+    <p class="overlay-score" id="gameover-text">Score: <span class="highlight">0</span></p>
+    <div class="overlay-buttons">
+      <button class="btn btn-primary" id="retry-btn">Try Again</button>
+      <a href="../index.html" class="btn btn-secondary">Back to Arcade</a>
+    </div>
+  </div>
+
+  <!-- Lightsaber Volume UI -->
+  <div id="lightsaber-volume">
+    <div class="hilt-btn"></div>
+    <div class="blade-container">
+      <div class="blade-glow"></div>
+      <input type="range" min="0" max="1" step="0.01" value="0.5" class="volume-slider">
+    </div>
+  </div>
+
+  <script src="../js/stars.js"></script>
+  <script src="../js/cursor.js"></script>
+  <script src="../js/audio.js"></script>
+  <script src="../js/volume.js"></script>
+  <script src="snake.js"></script>
+
+</body>
+</html>

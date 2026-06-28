@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Main body -->
+  <ellipse cx="16" cy="14" rx="5" ry="10" fill="#00f0ff" opacity="0.9"/>
+  <ellipse cx="16" cy="14" rx="4" ry="9" fill="#1a0a3e"/>
+  <ellipse cx="16" cy="14" rx="3" ry="7" fill="#0a0a2e"/>
+  <!-- Cockpit window -->
+  <ellipse cx="16" cy="10" rx="2" ry="2.5" fill="#00f0ff" opacity="0.7"/>
+  <ellipse cx="16" cy="10" rx="1.2" ry="1.5" fill="#b44aff" opacity="0.5"/>
+  <!-- Nose cone -->
+  <path d="M16 3 L19 10 L13 10 Z" fill="#00f0ff"/>
+  <path d="M16 4.5 L18 10 L14 10 Z" fill="#b44aff" opacity="0.6"/>
+  <!-- Left wing -->
+  <path d="M11 18 L7 26 L11 22 L13 20 Z" fill="#ff6b9d"/>
+  <path d="M11.5 19 L9 24 L11.5 21.5 Z" fill="#b44aff" opacity="0.5"/>
+  <!-- Right wing -->
+  <path d="M21 18 L25 26 L21 22 L19 20 Z" fill="#ff6b9d"/>
+  <path d="M20.5 19 L23 24 L20.5 21.5 Z" fill="#b44aff" opacity="0.5"/>
+  <!-- Engine flame -->
+  <ellipse cx="16" cy="25" rx="2.5" ry="3" fill="#ff6b9d" opacity="0.8"/>
+  <ellipse cx="16" cy="25.5" rx="1.5" ry="2.5" fill="#ffaa00" opacity="0.9"/>
+  <ellipse cx="16" cy="26" rx="0.8" ry="1.5" fill="#ffffff" opacity="0.9"/>
+  <!-- Body accent lines -->
+  <line x1="14" y1="8" x2="14" y2="20" stroke="#00f0ff" stroke-width="0.3" opacity="0.4"/>
+  <line x1="18" y1="8" x2="18" y2="20" stroke="#00f0ff" stroke-width="0.3" opacity="0.4"/>
+</svg>

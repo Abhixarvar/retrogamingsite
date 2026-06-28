@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cosmic Blocks — A space-themed Tetris game in Space Arcade!">
+  <title>Cosmic Blocks — Space Arcade</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/spaceship.svg">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div id="starfield"></div>
+
+  <a href="../index.html" class="back-btn" id="back-btn">← Arcade</a>
+
+  <div class="page-content game-page">
+    <div class="game-header">
+      <h1>Cosmic Blocks</h1>
+    </div>
+    <div class="game-hud">
+      <div>Score: <span class="value" id="score">0</span></div>
+      <div>Level: <span class="value" id="level">1</span></div>
+      <div>Lines: <span class="value" id="lines">0</span></div>
+      <div>Best: <span class="value" id="high-score">0</span></div>
+    </div>
+    <div class="tetris-layout">
+      <div class="tetris-side-panel" id="next-panel">
+        <p class="panel-label">Next</p>
+        <canvas id="next-canvas" width="120" height="100"></canvas>
+      </div>
+      <div class="game-canvas-wrap">
+        <canvas id="game-canvas" width="300" height="600"></canvas>
+      </div>
+      <div class="tetris-side-panel" id="hold-panel">
+        <p class="panel-label">Hold</p>
+        <canvas id="hold-canvas" width="120" height="100"></canvas>
+      </div>
+    </div>
+    <p class="game-controls-hint">
+      <kbd>←</kbd> <kbd>→</kbd> Move &nbsp;|&nbsp;
+      <kbd>↑</kbd> Rotate &nbsp;|&nbsp;
+      <kbd>↓</kbd> Soft Drop &nbsp;|&nbsp;
+      <kbd>Space</kbd> Hard Drop &nbsp;|&nbsp;
+      <kbd>C</kbd> Hold
+    </p>
+  </div>
+
+  <!-- Start Overlay -->
+  <div class="game-overlay" id="start-overlay">
+    <div class="overlay-title">Cosmic Blocks</div>
+    <p class="overlay-score">Stack the cosmic blocks, clear the lines! 🧱</p>
+    <div class="overlay-buttons">
+      <button class="btn btn-primary" id="start-btn">Start Mission</button>
+    </div>
+  </div>
+
+  <!-- Game Over Overlay -->
+  <div class="game-overlay hidden" id="gameover-overlay">
+    <div class="overlay-title">Game Over</div>
+    <p class="overlay-score" id="gameover-text">Score: <span class="highlight">0</span></p>
+    <div class="overlay-buttons">
+      <button class="btn btn-primary" id="retry-btn">Try Again</button>
+      <a href="../index.html" class="btn btn-secondary">Back to Arcade</a>
+    </div>
+  </div>
+
+  <!-- Lightsaber Volume UI -->
+  <div id="lightsaber-volume">
+    <div class="hilt-btn"></div>
+    <div class="blade-container">
+      <div class="blade-glow"></div>
+      <input type="range" min="0" max="1" step="0.01" value="0.5" class="volume-slider">
+    </div>
+  </div>
+
+  <script src="../js/stars.js"></script>
+  <script src="../js/cursor.js"></script>
+  <script src="../js/audio.js"></script>
+  <script src="../js/volume.js"></script>
+  <script src="tetris.js"></script>
+
+</body>
+</html>

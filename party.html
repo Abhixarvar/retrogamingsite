@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Space Arcade Multiplayer Lounge">
+  <title>Multiplayer Lounge — Space Arcade</title>
+  <link rel="icon" type="image/svg+xml" href="assets/spaceship.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Starfield Background -->
+  <div id="starfield"></div>
+
+  <!-- Lightsaber Volume UI -->
+  <div id="lightsaber-volume">
+    <div class="hilt-btn"></div>
+    <div class="blade-container">
+      <div class="blade-glow"></div>
+      <input type="range" min="0" max="1" step="0.01" value="0.5" class="volume-slider">
+    </div>
+  </div>
+
+  <!-- Multiplayer Global Lobby Overlays (now acting as page content) -->
+  <div class="game-overlay" id="global-lobby-overlay">
+    <div class="pong-lobby" style="max-width: 650px;">
+      <a href="index.html" class="btn btn-secondary" style="position: absolute; top: 1rem; left: 1rem; padding: 0.5rem 1rem; text-decoration: none;">← Back</a>
+      <div class="lobby-title">Multiplayer Lounge</div>
+      <div class="lobby-subtitle">Connect with a friend to play together ⚡</div>
+      <div class="lobby-stars">✦ ✧ ✦ ✧ ✦ ✧ ✦</div>
+      <div class="lobby-divider">✧ CHOOSE YOUR PATH ✧</div>
+      <div class="lobby-options">
+        <!-- Create Room -->
+        <div class="lobby-option" id="create-option">
+          <span class="option-icon">🚀</span>
+          <h3>Create Room</h3>
+          <p class="option-desc">Host a new room and invite a friend with your unique code</p>
+          <div class="lobby-input-wrap">
+            <span class="input-icon">👾</span>
+            <input type="text" class="lobby-input" id="create-name" placeholder="Your cosmic name" maxlength="12" autocomplete="off">
+          </div>
+          <button class="btn btn-create btn-lobby" id="create-btn">Create Room ✦</button>
+          <div class="lobby-error" id="create-error"></div>
+        </div>
+        <!-- Join Room -->
+        <div class="lobby-option" id="join-option">
+          <span class="option-icon">🌟</span>
+          <h3>Join Room</h3>
+          <p class="option-desc">Enter a room code shared by your friend to join</p>
+          <div class="lobby-input-wrap">
+            <span class="input-icon">👾</span>
+            <input type="text" class="lobby-input" id="join-name" placeholder="Your cosmic name" maxlength="12" autocomplete="off">
+          </div>
+          <div class="lobby-input-wrap">
+            <span class="input-icon">🔑</span>
+            <input type="text" class="lobby-input code-input" id="join-code" placeholder="ROOM CODE" maxlength="6" autocomplete="off">
+          </div>
+          <button class="btn btn-join btn-lobby" id="join-btn">Join Room ✦</button>
+          <div class="lobby-error" id="join-error"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Waiting Overlay -->
+  <div class="game-overlay hidden" id="waiting-overlay">
+    <div class="waiting-room">
+      <div class="overlay-title">Room Created</div>
+      <p class="overlay-score">Share this code with your friend:</p>
+      <div class="room-code-display" id="room-code-box">
+        <span class="code" id="display-code">------</span>
+        <span class="copy-hint">Click to copy</span>
+      </div>
+      <div class="waiting-spinner"></div>
+      <p class="overlay-score">Waiting for connection…</p>
+      <div class="overlay-buttons">
+        <button class="btn btn-secondary" id="cancel-wait-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connecting Overlay -->
+  <div class="game-overlay hidden" id="connecting-overlay">
+    <div class="waiting-room">
+      <div class="overlay-title">Connecting</div>
+      <div class="waiting-spinner"></div>
+      <p class="overlay-score">Joining room…</p>
+      <div class="overlay-buttons">
+        <button class="btn btn-secondary" id="cancel-connect-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Room UI Overlay (Game Selection) -->
+  <div class="game-overlay hidden" id="room-ui-overlay">
+    <div class="waiting-room" style="max-width: 600px; width: 90%;">
+      <div class="overlay-title">Lounge Room</div>
+      <div class="players-container" style="display: flex; justify-content: space-around; margin: 2rem 0;">
+        <div class="player-slot">
+          <h3 id="room-p1-name" style="color: var(--neon-blue); font-size: 1.5rem;">Player 1</h3>
+          <span id="room-p1-status" style="color: var(--text-muted);">Not Ready</span>
+        </div>
+        <div class="pong-vs">VS</div>
+        <div class="player-slot">
+          <h3 id="room-p2-name" style="color: var(--neon-pink); font-size: 1.5rem;">Player 2</h3>
+          <span id="room-p2-status" style="color: var(--text-muted);">Not Ready</span>
+        </div>
+      </div>
+      
+      <div class="game-selection" style="margin-bottom: 2rem;">
+        <h4 style="color: white; margin-bottom: 1rem;">Select Game</h4>
+        <select id="game-select" class="lobby-input" style="width: 100%; text-align: center; cursor: pointer;">
+          <option value="pong">Cosmic Pong (Multiplayer)</option>
+          <option value="snake">Space Worm (Sync Start)</option>
+          <option value="pacman">Pac-Man (Sync Start)</option>
+          <option value="troopers">Space Troopers (Sync Start)</option>
+          <option value="tetris">Cosmic Blocks (Sync Start)</option>
+        </select>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;" id="game-select-hint">Only the host can change the game.</p>
+      </div>
+
+      <div class="overlay-buttons" style="flex-direction: column; gap: 1rem;">
+        <button class="btn btn-primary" id="ready-btn" style="width: 100%;">I'm Ready</button>
+        <button class="btn btn-create hidden" id="launch-game-btn" style="width: 100%;">Launch Game 🚀</button>
+        <button class="btn btn-secondary" id="leave-room-btn" style="width: 100%;">Leave Room</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disconnect Overlay -->
+  <div class="game-overlay hidden" id="disconnect-overlay">
+    <div class="overlay-title">Disconnected</div>
+    <p class="overlay-score">The other player has left the lounge.</p>
+    <div class="overlay-buttons">
+      <button class="btn btn-primary" id="back-lobby-btn">Back to Lounge</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+  <script src="js/stars.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/volume.js"></script>
+  <script src="js/lobby.js"></script>
+
+</body>
+</html>
