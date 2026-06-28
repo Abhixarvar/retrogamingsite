@@ -5,7 +5,7 @@
   // ── Constants ────────────────────────────────────────
   const WIN_SCORE = 10;
   const CANVAS_W = 700;
-  const CANVAS_H = 500;
+  const CANVAS_H = 700;
   const PADDLE_W = 10;
   const PADDLE_H = 90;
   const PADDLE_GAP = 20;
@@ -89,6 +89,7 @@
       trail: [],
       particles: [],
       screenShake: 0,
+      cooldown: 0,
     };
   }
 
@@ -280,6 +281,7 @@
         if (!isHost && state) {
           state.scores = data.scores;
           updateHUD();
+          if (data.side) triggerScoreAnim(data.side);
         }
         break;
 
@@ -427,95 +429,103 @@
 
     const ball = state.ball;
 
-    // ── Trail ──
-    state.trail.push({ x: ball.x, y: ball.y });
-    if (state.trail.length > TRAIL_LEN) state.trail.shift();
+    if (state.cooldown > 0) {
+      state.cooldown--;
+    } else {
+      // ── Trail ──
+      state.trail.push({ x: ball.x, y: ball.y });
+      if (state.trail.length > TRAIL_LEN) state.trail.shift();
 
-    // ── Move ball ──
-    ball.x += ball.vx;
-    ball.y += ball.vy;
+      // ── Move ball ──
+      ball.x += ball.vx;
+      ball.y += ball.vy;
 
-    // ── Wall bounce (top/bottom) ──
-    if (ball.y - BALL_R <= 0) {
-      ball.y = BALL_R;
-      ball.vy = Math.abs(ball.vy);
-    }
-    if (ball.y + BALL_R >= CANVAS_H) {
-      ball.y = CANVAS_H - BALL_R;
-      ball.vy = -Math.abs(ball.vy);
-    }
-
-    // ── Paddle collision ──
-    const lp = state.paddles.left;
-    const rp = state.paddles.right;
-
-    // Left paddle
-    if (ball.vx < 0 &&
-      ball.x - BALL_R <= PADDLE_GAP + PADDLE_W &&
-      ball.x - BALL_R >= PADDLE_GAP - 2 &&
-      ball.y >= lp.y && ball.y <= lp.y + PADDLE_H) {
-      ball.x = PADDLE_GAP + PADDLE_W + BALL_R;
-      const hitPos = (ball.y - lp.y) / PADDLE_H; // 0..1
-      const angle = (hitPos - 0.5) * Math.PI * 0.6; // -54° to 54°
-      const speed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy) + 0.2;
-      ball.vx = Math.abs(Math.cos(angle) * speed);
-      ball.vy = Math.sin(angle) * speed;
-      spawnParticles(ball.x, ball.y, '#00ff88');
-    }
-
-    // Right paddle
-    if (ball.vx > 0 &&
-      ball.x + BALL_R >= CANVAS_W - PADDLE_GAP - PADDLE_W &&
-      ball.x + BALL_R <= CANVAS_W - PADDLE_GAP + 2 &&
-      ball.y >= rp.y && ball.y <= rp.y + PADDLE_H) {
-      ball.x = CANVAS_W - PADDLE_GAP - PADDLE_W - BALL_R;
-      const hitPos = (ball.y - rp.y) / PADDLE_H;
-      const angle = (hitPos - 0.5) * Math.PI * 0.6;
-      const speed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy) + 0.2;
-      ball.vx = -Math.abs(Math.cos(angle) * speed);
-      ball.vy = Math.sin(angle) * speed;
-      spawnParticles(ball.x, ball.y, '#00f0ff');
-    }
-
-    // Cap ball speed
-    const maxSpeed = 9;
-    const currentSpeed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
-    if (currentSpeed > maxSpeed) {
-      ball.vx = (ball.vx / currentSpeed) * maxSpeed;
-      ball.vy = (ball.vy / currentSpeed) * maxSpeed;
-    }
-
-    // ── Scoring ──
-    if (ball.x < -BALL_R * 2) {
-      state.scores.right++;
-      state.screenShake = 8;
-      send({ type: 'score', scores: state.scores });
-      updateHUD();
-      if (state.scores.right >= WIN_SCORE) {
-        gameRunning = false;
-        if (animFrameId) cancelAnimationFrame(animFrameId);
-        const winner = isHost ? opponentName : myName;
-        send({ type: 'gameover', winner });
-        showGameOver(winner);
-        return;
+      // ── Wall bounce (top/bottom) ──
+      if (ball.y - BALL_R <= 0) {
+        ball.y = BALL_R;
+        ball.vy = Math.abs(ball.vy);
       }
-      resetBall(-1);
-    }
-
-    if (ball.x > CANVAS_W + BALL_R * 2) {
-      state.scores.left++;
-      state.screenShake = 8;
-      send({ type: 'score', scores: state.scores });
-      updateHUD();
-      if (state.scores.left >= WIN_SCORE) {
-        gameRunning = false;
-        if (animFrameId) cancelAnimationFrame(animFrameId);
-        const winner = isHost ? myName : opponentName;
-        send({ type: 'gameover', winner });
-        showGameOver(winner);
-        return;
+      if (ball.y + BALL_R >= CANVAS_H) {
+        ball.y = CANVAS_H - BALL_R;
+        ball.vy = -Math.abs(ball.vy);
       }
-      resetBall(1);
+
+      // ── Paddle collision ──
+      const lp = state.paddles.left;
+      const rp = state.paddles.right;
+
+      // Left paddle
+      if (ball.vx < 0 &&
+        ball.x - BALL_R <= PADDLE_GAP + PADDLE_W &&
+        ball.x - BALL_R >= PADDLE_GAP - 2 &&
+        ball.y >= lp.y && ball.y <= lp.y + PADDLE_H) {
+        ball.x = PADDLE_GAP + PADDLE_W + BALL_R;
+        const hitPos = (ball.y - lp.y) / PADDLE_H; // 0..1
+        const angle = (hitPos - 0.5) * Math.PI * 0.6; // -54° to 54°
+        const speed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy) + 0.2;
+        ball.vx = Math.abs(Math.cos(angle) * speed);
+        ball.vy = Math.sin(angle) * speed;
+        spawnParticles(ball.x, ball.y, '#00ff88');
+      }
+
+      // Right paddle
+      if (ball.vx > 0 &&
+        ball.x + BALL_R >= CANVAS_W - PADDLE_GAP - PADDLE_W &&
+        ball.x + BALL_R <= CANVAS_W - PADDLE_GAP + 2 &&
+        ball.y >= rp.y && ball.y <= rp.y + PADDLE_H) {
+        ball.x = CANVAS_W - PADDLE_GAP - PADDLE_W - BALL_R;
+        const hitPos = (ball.y - rp.y) / PADDLE_H;
+        const angle = (hitPos - 0.5) * Math.PI * 0.6;
+        const speed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy) + 0.2;
+        ball.vx = -Math.abs(Math.cos(angle) * speed);
+        ball.vy = Math.sin(angle) * speed;
+        spawnParticles(ball.x, ball.y, '#00f0ff');
+      }
+
+      // Cap ball speed
+      const maxSpeed = 9;
+      const currentSpeed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
+      if (currentSpeed > maxSpeed) {
+        ball.vx = (ball.vx / currentSpeed) * maxSpeed;
+        ball.vy = (ball.vy / currentSpeed) * maxSpeed;
+      }
+
+      // ── Scoring ──
+      if (ball.x < -BALL_R * 2) {
+        state.scores.right++;
+        state.screenShake = 8;
+        state.cooldown = 180;
+        send({ type: 'score', scores: state.scores, side: 'right' });
+        updateHUD();
+        triggerScoreAnim('right');
+        if (state.scores.right >= WIN_SCORE) {
+          gameRunning = false;
+          if (animFrameId) cancelAnimationFrame(animFrameId);
+          const winner = isHost ? opponentName : myName;
+          send({ type: 'gameover', winner });
+          showGameOver(winner);
+          return;
+        }
+        resetBall(-1);
+      }
+
+      if (ball.x > CANVAS_W + BALL_R * 2) {
+        state.scores.left++;
+        state.screenShake = 8;
+        state.cooldown = 180;
+        send({ type: 'score', scores: state.scores, side: 'left' });
+        updateHUD();
+        triggerScoreAnim('left');
+        if (state.scores.left >= WIN_SCORE) {
+          gameRunning = false;
+          if (animFrameId) cancelAnimationFrame(animFrameId);
+          const winner = isHost ? myName : opponentName;
+          send({ type: 'gameover', winner });
+          showGameOver(winner);
+          return;
+        }
+        resetBall(1);
+      }
     }
 
     // ── Update particles ──
@@ -679,7 +689,14 @@
     hudScoreR.textContent = state.scores.right;
   }
 
-  // ── Game Over ────────────────────────────────────────
+  function triggerScoreAnim(side) {
+    const el = side === 'left' ? hudScoreL : hudScoreR;
+    el.classList.remove('score-bump');
+    void el.offsetWidth; // Trigger reflow
+    el.classList.add('score-bump');
+  }
+
+  // ── Network ──────────────────────────────────────────
   function showGameOver(winnerName) {
     hideAll();
     show(gameoverOverlay);

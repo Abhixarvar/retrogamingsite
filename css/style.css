@@ -1270,3 +1270,14 @@ button { cursor: none; }
   border: none;
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><text y='24' font-size='24'>🤏</text></svg>") 16 16, pointer;
 }
+ 
+ / *   S c o r e   A n i m a t i o n   * /  
+ @ k e y f r a m e s   s c o r e B u m p   {  
+     0 %   {   t r a n s f o r m :   s c a l e ( 1 ) ;   f i l t e r :   b r i g h t n e s s ( 1 ) ;   }  
+     5 0 %   {   t r a n s f o r m :   s c a l e ( 1 . 6 ) ;   f i l t e r :   b r i g h t n e s s ( 1 . 5 ) ;   }  
+     1 0 0 %   {   t r a n s f o r m :   s c a l e ( 1 ) ;   f i l t e r :   b r i g h t n e s s ( 1 ) ;   }  
+ }  
+ . s c o r e - b u m p   {  
+     a n i m a t i o n :   s c o r e B u m p   0 . 5 s   c u b i c - b e z i e r ( 0 . 1 7 5 ,   0 . 8 8 5 ,   0 . 3 2 ,   1 . 2 7 5 ) ;  
+ }  
+ 
