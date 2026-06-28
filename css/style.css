@@ -1417,3 +1417,100 @@ button { cursor: none; }
   color: var(--text-muted);
   line-height: 1.4;
 }
+
+/* --- Astral / Synthwave Background Redesign --- */
+.astral-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+  background: linear-gradient(180deg, #09001b 0%, #1a0033 40%, #ff007f 100%);
+}
+
+.astral-planet {
+  position: absolute;
+  top: 5%;
+  left: 40%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle at 30% 30%, #ff3366, #660000);
+  border-radius: 50%;
+  box-shadow: inset -20px -20px 50px rgba(0,0,0,0.8), 0 0 50px rgba(255,51,102,0.4);
+}
+
+.astral-sun {
+  position: absolute;
+  bottom: 20%;
+  left: 30%;
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(180deg, #ffdd00 0%, #ff8800 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 100px rgba(255, 136, 0, 0.8);
+}
+
+.astral-sun-halo {
+  position: absolute;
+  bottom: 25%;
+  left: 20%;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, #ffdd00, transparent 70%);
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+.astral-grid-bottom {
+  position: absolute;
+  bottom: 0;
+  left: -50%;
+  width: 200%;
+  height: 40%;
+  background-image: linear-gradient(rgba(255,0,127,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,0,127,0.3) 1px, transparent 1px);
+  background-size: 50px 50px;
+  transform: perspective(600px) rotateX(75deg);
+  transform-origin: top;
+  animation: gridMove 3s linear infinite;
+}
+
+.astral-grid-top {
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 200%;
+  height: 30%;
+  background-image: linear-gradient(transparent 95%, rgba(0,240,255,0.2) 95%), linear-gradient(90deg, transparent 95%, rgba(0,240,255,0.2) 95%);
+  background-size: 80px 80px;
+  transform: perspective(600px) rotateX(-80deg);
+  transform-origin: bottom;
+  opacity: 0.5;
+}
+
+@keyframes gridMove {
+  from { background-position: 0 0; }
+  to { background-position: 0 50px; }
+}
+
+.astral-ship {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(15deg);
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+  animation: floatShip 4s ease-in-out infinite alternate;
+}
+
+@keyframes floatShip {
+  0% { transform: translate(-50%, -50%) rotate(15deg) translateY(0); }
+  100% { transform: translate(-50%, -50%) rotate(15deg) translateY(-20px); }
+}
+
+/* Override .promo-section margin to make it compact */
+.promo-section {
+  margin-top: 2rem !important;
+}

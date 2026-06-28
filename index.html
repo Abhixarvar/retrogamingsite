@@ -6,7 +6,7 @@
   <meta name="description" content="Space Arcade — Play retro games like Snake, Pac-Man, and Space Troopers in a cosmic space adventure!">
   <title>Space Arcade — Retro Games</title>
   <link rel="icon" type="image/svg+xml" href="assets/spaceship.svg">
-  <link rel="stylesheet" href="css/style.css?v=2">
+  <link rel="stylesheet" href="css/style.css?v=3">
 </head>
 <body>
 
@@ -16,12 +16,25 @@
   <!-- Page Content -->
   <div class="page-content">
 
-    <!-- Galaxy Background is applied via CSS to body -->
+    <!-- Astral Background Elements -->
+    <div class="astral-bg">
+      <div class="astral-planet"></div>
+      <div class="astral-sun"></div>
+      <div class="astral-sun-halo"></div>
+      <div class="astral-grid-bottom"></div>
+      <div class="astral-grid-top"></div>
+      
+      <!-- Sleek Spaceship SVG -->
+      <svg class="astral-ship" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 10 L80 60 L60 60 L50 80 L40 60 L20 60 Z" fill="#09001b" stroke="#ff007f" stroke-width="2"/>
+        <circle cx="45" cy="55" r="3" fill="#00f0ff" filter="drop-shadow(0 0 4px #00f0ff)"/>
+        <circle cx="55" cy="55" r="3" fill="#00f0ff" filter="drop-shadow(0 0 4px #00f0ff)"/>
+      </svg>
+    </div>
 
     <!-- Hero Section -->
-    <header class="hero synth-hero">
-      <h1 class="hero-title synth-title">GAME</h1>
-      <p class="hero-subtitle synth-subtitle">@spacearcade</p>
+    <header class="hero synth-hero" style="margin-top: 5vh; margin-bottom: 2rem;">
+      <h1 class="hero-title synth-title" style="font-size: 5rem; letter-spacing: 10px;">SPACE ARCADE</h1>
     </header>
 
     <!-- Main Navigation Menu -->
