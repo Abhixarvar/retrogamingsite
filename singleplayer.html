@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Space Arcade — Play retro games like Snake, Pac-Man, and Space Troopers in a cosmic space adventure!">
+  <title>Space Arcade — Retro Games</title>
+  <link rel="icon" type="image/svg+xml" href="assets/spaceship.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Starfield Background -->
+  <div id="starfield"></div>
+
+  <!-- Page Content -->
+  <div class="page-content">
+
+    <!-- Hero Section -->
+    <header class="hero" style="position: relative;">
+      <a href="index.html" class="back-btn" style="position: absolute; top: 0; left: 0;">← Home</a>
+      <h1 class="hero-title">Single Player</h1>
+      <p class="hero-subtitle">Choose your mission, <span>Commander!</span></p>
+    </header>
+
+    <!-- Game Cards Grid -->
+    <section class="games-grid" id="games-grid">
+
+
+
+      <!-- Snake -->
+      <a href="games/snake.html" target="_blank" class="game-card" data-game="snake" id="card-snake">
+        <canvas class="card-preview" id="preview-snake" width="280" height="150"></canvas>
+        <h2 class="card-title">Space Worm</h2>
+        <p class="card-tagline">Guide your glowing space worm through the cosmos and collect stars!</p>
+        <span class="card-play-btn">Launch Mission</span>
+      </a>
+
+      <!-- Pac-Man -->
+      <a href="games/pacman.html" target="_blank" class="game-card" data-game="pacman" id="card-pacman">
+        <canvas class="card-preview" id="preview-pacman" width="280" height="150"></canvas>
+        <h2 class="card-title">Pac-Man</h2>
+        <p class="card-tagline">Navigate the galactic maze, eat all the dots, and dodge the ghosts!</p>
+        <span class="card-play-btn">Launch Mission</span>
+      </a>
+
+      <!-- Space Troopers -->
+      <a href="games/troopers.html" target="_blank" class="game-card" data-game="troopers" id="card-troopers">
+        <canvas class="card-preview" id="preview-troopers" width="280" height="150"></canvas>
+        <h2 class="card-title">Space Troopers</h2>
+        <p class="card-tagline">Blast through waves of alien invaders and defend the galaxy!</p>
+        <span class="card-play-btn">Launch Mission</span>
+      </a>
+
+      <!-- Tetris -->
+      <a href="games/tetris.html" target="_blank" class="game-card" data-game="tetris" id="card-tetris">
+        <canvas class="card-preview" id="preview-tetris" width="280" height="150"></canvas>
+        <h2 class="card-title">Cosmic Blocks</h2>
+        <p class="card-tagline">Stack cosmic tetrominoes, clear lines, and reach for the stars!</p>
+        <span class="card-play-btn">Launch Mission</span>
+      </a>
+
+    </section>
+
+    <!-- Footer Teaser -->
+    <footer class="footer-teaser">
+      <p>More missions coming soon… <span class="rocket">🚀</span></p>
+    </footer>
+
+  </div>
+
+  <!-- Lightsaber Volume UI -->
+  <div id="lightsaber-volume">
+    <div class="hilt-btn"></div>
+    <div class="blade-container">
+      <div class="blade-glow"></div>
+      <input type="range" min="0" max="1" step="0.01" value="0.5" class="volume-slider">
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/stars.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/volume.js"></script>
+  <script src="js/previews.js"></script>
+
+</body>
+</html>

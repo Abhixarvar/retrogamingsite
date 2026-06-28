@@ -16,65 +16,45 @@
   <!-- Page Content -->
   <div class="page-content">
 
+    <!-- Synthwave Background Elements -->
+    <div class="synthwave-bg">
+      <div class="synth-sun"></div>
+      <div class="synth-grid"></div>
+      <!-- UFOs -->
+      <div class="ufo ufo-1">🛸</div>
+      <div class="ufo ufo-2">🚀</div>
+      <div class="ufo ufo-3">🛰️</div>
+    </div>
+
     <!-- Hero Section -->
-    <header class="hero">
-      <h1 class="hero-title">Space Arcade</h1>
-      <p class="hero-subtitle">Choose your mission, <span>Commander!</span></p>
-      <a href="party.html" target="_blank" class="btn btn-primary" id="open-lobby-btn" style="margin-top: 1.5rem; text-decoration: none; display: inline-block;">🚀 Multiplayer Lounge</a>
+    <header class="hero synth-hero">
+      <h1 class="hero-title synth-title">GAME</h1>
+      <p class="hero-subtitle synth-subtitle">@spacearcade</p>
     </header>
 
-    <!-- Game Cards Grid -->
-    <section class="games-grid" id="games-grid">
-
-      <!-- Cosmic Pong — Featured Multiplayer -->
-      <a href="games/pong.html" target="_blank" class="game-card featured" data-game="pong" id="card-pong">
-        <canvas class="card-preview" id="preview-pong" width="400" height="220"></canvas>
-        <div class="featured-info">
-          <span class="featured-badge">✨ Multiplayer</span>
-          <h2 class="card-title">Cosmic Pong</h2>
-          <p class="card-tagline">Challenge a friend in real-time cosmic ping pong! Create a room or join with a code — first to 10 wins the galaxy.</p>
-          <span class="card-play-btn">Launch Mission</span>
-        </div>
-      </a>
-
-      <!-- Snake -->
-      <a href="games/snake.html" target="_blank" class="game-card" data-game="snake" id="card-snake">
-        <canvas class="card-preview" id="preview-snake" width="280" height="150"></canvas>
-        <h2 class="card-title">Space Worm</h2>
-        <p class="card-tagline">Guide your glowing space worm through the cosmos and collect stars!</p>
-        <span class="card-play-btn">Launch Mission</span>
-      </a>
-
-      <!-- Pac-Man -->
-      <a href="games/pacman.html" target="_blank" class="game-card" data-game="pacman" id="card-pacman">
-        <canvas class="card-preview" id="preview-pacman" width="280" height="150"></canvas>
-        <h2 class="card-title">Pac-Man</h2>
-        <p class="card-tagline">Navigate the galactic maze, eat all the dots, and dodge the ghosts!</p>
-        <span class="card-play-btn">Launch Mission</span>
-      </a>
-
-      <!-- Space Troopers -->
-      <a href="games/troopers.html" target="_blank" class="game-card" data-game="troopers" id="card-troopers">
-        <canvas class="card-preview" id="preview-troopers" width="280" height="150"></canvas>
-        <h2 class="card-title">Space Troopers</h2>
-        <p class="card-tagline">Blast through waves of alien invaders and defend the galaxy!</p>
-        <span class="card-play-btn">Launch Mission</span>
-      </a>
-
-      <!-- Tetris -->
-      <a href="games/tetris.html" target="_blank" class="game-card" data-game="tetris" id="card-tetris">
-        <canvas class="card-preview" id="preview-tetris" width="280" height="150"></canvas>
-        <h2 class="card-title">Cosmic Blocks</h2>
-        <p class="card-tagline">Stack cosmic tetrominoes, clear lines, and reach for the stars!</p>
-        <span class="card-play-btn">Launch Mission</span>
-      </a>
-
+    <!-- Main Navigation Menu -->
+    <section class="synth-nav">
+      <a href="singleplayer.html" class="synth-btn">🕹️ Single Player Missions</a>
+      <a href="party.html" target="_blank" class="synth-btn synth-btn-glow">🌐 Online Party Lounge</a>
+      <a href="offline.html" class="synth-btn">🛋️ Local Multiplayer</a>
     </section>
 
-    <!-- Footer Teaser -->
-    <footer class="footer-teaser">
-      <p>More missions coming soon… <span class="rocket">🚀</span></p>
-    </footer>
+    <!-- Cross-Promotion Section -->
+    <section class="promo-section">
+      <h2 class="promo-title">Partner Networks</h2>
+      <div class="promo-grid">
+        <a href="https://gamerecommendation-ai-nxyt.vercel.app/" target="_blank" class="promo-card">
+          <div class="promo-icon">🤖</div>
+          <h3>Game Recommendation AI</h3>
+          <p>Discover your next favorite game with our intelligent AI recommender.</p>
+        </a>
+        <a href="https://phopee.vercel.app/" target="_blank" class="promo-card">
+          <div class="promo-icon">📱</div>
+          <h3>Phopee</h3>
+          <p>Find the perfect smartphone tailored to your needs and budget.</p>
+        </a>
+      </div>
+    </section>
 
   </div>
 

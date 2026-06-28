@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Space Arcade — Play retro games like Snake, Pac-Man, and Space Troopers in a cosmic space adventure!">
+  <title>Space Arcade — Retro Games</title>
+  <link rel="icon" type="image/svg+xml" href="assets/spaceship.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Starfield Background -->
+  <div id="starfield"></div>
+
+  <!-- Page Content -->
+  <div class="page-content">
+
+    <header class="hero" style="position: relative;">
+      <a href="index.html" class="back-btn" style="position: absolute; top: 0; left: 0;">← Home</a>
+      <h1 class="hero-title">Offline Multiplayer</h1>
+      <p class="hero-subtitle">Local couch co-op & versus games <span>Coming Soon!</span></p>
+    </header>
+
+    <!-- Game Cards Grid -->
+    <section class="games-grid" id="games-grid">
+
+
+
+      <div style="text-align: center; width: 100%; padding: 40px; color: var(--text-muted); font-size: 1.2rem;">
+        No offline multiplayer missions available right now.<br>Check back later, Commander!
+      </div>
+
+    </section>
+
+    <!-- Footer Teaser -->
+    <footer class="footer-teaser">
+      <p>More missions coming soon… <span class="rocket">🚀</span></p>
+    </footer>
+
+  </div>
+
+  <!-- Lightsaber Volume UI -->
+  <div id="lightsaber-volume">
+    <div class="hilt-btn"></div>
+    <div class="blade-container">
+      <div class="blade-glow"></div>
+      <input type="range" min="0" max="1" step="0.01" value="0.5" class="volume-slider">
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/stars.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/volume.js"></script>
+  <script src="js/previews.js"></script>
+
+</body>
+</html>

@@ -1281,3 +1281,206 @@ button { cursor: none; }
      a n i m a t i o n :   s c o r e B u m p   0 . 5 s   c u b i c - b e z i e r ( 0 . 1 7 5 ,   0 . 8 8 5 ,   0 . 3 2 ,   1 . 2 7 5 ) ;  
  }  
  
+
+/* --- Synthwave / Retro Solar System Redesign --- */
+.synthwave-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+  background: linear-gradient(180deg, #09001b 0%, #1a0033 60%, #30004a 100%);
+}
+
+.synth-sun {
+  position: absolute;
+  bottom: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(180deg, #ffdd00 0%, #ff007f 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 100px rgba(255, 0, 127, 0.6);
+  z-index: 1;
+  mask-image: linear-gradient(to bottom, black 40%, transparent 40%, transparent 43%, black 43%, black 46%, transparent 46%, transparent 49%, black 49%, black 53%, transparent 53%, transparent 57%, black 57%, black 62%, transparent 62%, transparent 68%, black 68%, black 75%, transparent 75%, transparent 84%, black 84%);
+  -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 40%, transparent 43%, black 43%, black 46%, transparent 46%, transparent 49%, black 49%, black 53%, transparent 53%, transparent 57%, black 57%, black 62%, transparent 62%, transparent 68%, black 68%, black 75%, transparent 75%, transparent 84%, black 84%);
+}
+
+.synth-grid {
+  position: absolute;
+  bottom: 0;
+  left: -50%;
+  width: 200%;
+  height: 35%;
+  background-image: linear-gradient(transparent 95%, #ff007f 95%), linear-gradient(90deg, transparent 95%, #ff007f 95%);
+  background-size: 50px 50px;
+  transform: perspective(600px) rotateX(75deg);
+  transform-origin: top;
+  z-index: 2;
+  animation: gridMove 2s linear infinite;
+}
+
+@keyframes gridMove {
+  from { background-position: 0 0; }
+  to { background-position: 0 50px; }
+}
+
+.ufo {
+  position: absolute;
+  font-size: 3rem;
+  z-index: 3;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.8));
+}
+
+.ufo-1 { top: 20%; left: 15%; animation: floatUfo1 6s ease-in-out infinite; }
+.ufo-2 { top: 15%; right: 20%; animation: floatUfo2 8s ease-in-out infinite alternate; font-size: 2.5rem; }
+.ufo-3 { top: 35%; right: 10%; animation: floatUfo1 7s ease-in-out infinite reverse; font-size: 2rem; }
+
+@keyframes floatUfo1 {
+  0% { transform: translateY(0) translateX(0) rotate(5deg); }
+  50% { transform: translateY(-30px) translateX(20px) rotate(-5deg); }
+  100% { transform: translateY(0) translateX(0) rotate(5deg); }
+}
+
+@keyframes floatUfo2 {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-40px) scale(1.1); }
+}
+
+/* --- Typography & Hero --- */
+.synth-hero {
+  margin-top: 15vh;
+  margin-bottom: 3rem;
+}
+
+.synth-title {
+  font-size: 6rem;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 4px 4px 0px #ff007f, -4px -4px 0px #00f0ff;
+  letter-spacing: 15px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.synth-subtitle {
+  font-size: 1.5rem;
+  color: #fff;
+  letter-spacing: 5px;
+  font-weight: 700;
+}
+
+/* --- Nav Buttons --- */
+.synth-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  z-index: 10;
+  position: relative;
+}
+
+.synth-btn {
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid #00f0ff;
+  color: #00f0ff;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.2);
+  display: inline-block;
+}
+
+.synth-btn:hover {
+  background: rgba(0, 240, 255, 0.1);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.6), inset 0 0 15px rgba(0, 240, 255, 0.4);
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+.synth-btn-glow {
+  border-color: #ff007f;
+  color: #ff007f;
+  box-shadow: inset 0 0 10px rgba(255, 0, 127, 0.2);
+}
+
+.synth-btn-glow:hover {
+  background: rgba(255, 0, 127, 0.1);
+  box-shadow: 0 0 20px rgba(255, 0, 127, 0.6), inset 0 0 15px rgba(255, 0, 127, 0.4);
+  color: #fff;
+}
+
+/* --- Promo Section --- */
+.promo-section {
+  margin-top: 5rem;
+  padding: 40px 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border-top: 1px solid rgba(255, 0, 127, 0.3);
+  z-index: 10;
+  position: relative;
+}
+
+.promo-title {
+  font-size: 1.8rem;
+  color: #ff007f;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.promo-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.promo-card {
+  background: rgba(20, 0, 30, 0.8);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: 12px;
+  padding: 30px;
+  width: 300px;
+  text-decoration: none;
+  transition: all 0.3s;
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.promo-card:hover {
+  transform: translateY(-5px);
+  border-color: #00f0ff;
+  box-shadow: 0 10px 30px rgba(0, 240, 255, 0.2);
+}
+
+.promo-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.promo-card h3 {
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.promo-card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
