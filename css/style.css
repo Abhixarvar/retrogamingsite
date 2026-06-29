@@ -1,5 +1,5 @@
 /* ===== SPACE ARCADE — Design System ===== */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Bungee&family=Righteous&display=swap');
 
 /* --- Custom Properties --- */
 :root {
@@ -20,6 +20,8 @@
   --radius-md: 12px;
   --radius-sm: 8px;
   --font: 'Outfit', sans-serif;
+  --font-funky: 'Bungee', cursive;
+  --font-playful: 'Righteous', cursive;
   --glow-cyan: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 60px rgba(0, 240, 255, 0.1);
   --glow-purple: 0 0 20px rgba(180, 74, 255, 0.3), 0 0 60px rgba(180, 74, 255, 0.1);
   --glow-pink: 0 0 20px rgba(255, 107, 157, 0.3), 0 0 60px rgba(255, 107, 157, 0.1);
@@ -133,8 +135,9 @@ button { cursor: none; }
 }
 
 .hero-title {
+  font-family: var(--font-funky);
   font-size: clamp(2.5rem, 8vw, 5rem);
-  font-weight: 900;
+  font-weight: 400;
   letter-spacing: 6px;
   text-transform: uppercase;
   background: linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
@@ -403,8 +406,9 @@ button { cursor: none; }
 }
 
 .lobby-title {
+  font-family: var(--font-funky);
   font-size: 2.8rem;
-  font-weight: 900;
+  font-weight: 400;
   letter-spacing: 4px;
   text-transform: uppercase;
   background: linear-gradient(135deg, #00ff88, #00f0ff, #b44aff);
@@ -1005,8 +1009,9 @@ button { cursor: none; }
 }
 
 .overlay-title {
+  font-family: var(--font-funky);
   font-size: 3rem;
-  font-weight: 900;
+  font-weight: 400;
   letter-spacing: 4px;
   text-transform: uppercase;
   background: linear-gradient(135deg, var(--cyan), var(--pink));
@@ -1042,9 +1047,9 @@ button { cursor: none; }
   padding: 14px 32px;
   border: none;
   border-radius: var(--radius-md);
-  font-family: var(--font);
+  font-family: var(--font-playful);
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 1px;
   text-transform: uppercase;
   text-decoration: none;
@@ -1290,20 +1295,22 @@ button { cursor: none; }
 }
 
 .synth-title {
+  font-family: var(--font-funky);
   font-size: 6rem;
-  font-weight: 900;
+  font-weight: 400;
   color: #fff;
   text-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 40px #7000ff;
-  letter-spacing: 12px;
+  letter-spacing: 5px;
   text-transform: uppercase;
   margin-bottom: 10px;
 }
 
 .synth-subtitle {
+  font-family: var(--font-playful);
   font-size: 1.5rem;
   color: var(--cyan);
   letter-spacing: 5px;
-  font-weight: 700;
+  font-weight: 400;
   text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
 }
 
@@ -1319,12 +1326,13 @@ button { cursor: none; }
 }
 
 .synth-btn {
+  font-family: var(--font-playful);
   background: rgba(10, 0, 30, 0.8);
   border: 1px solid var(--cyan);
   color: var(--cyan);
   padding: 15px 30px;
   font-size: 1.2rem;
-  font-weight: 700;
+  font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 3px;
   border-radius: 0;
@@ -1449,7 +1457,12 @@ button { cursor: none; }
   height: 100%;
   overflow: hidden;
   z-index: -1;
-  background: linear-gradient(180deg, #050014 0%, #1a0033 40%, #ff007f 100%);
+  background-color: #03000a;
+  background-image: 
+    radial-gradient(circle at 15% 25%, rgba(0, 240, 255, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 85% 75%, rgba(255, 0, 127, 0.35) 0%, transparent 50%),
+    radial-gradient(circle at 50% 10%, rgba(112, 0, 255, 0.3) 0%, transparent 50%),
+    linear-gradient(180deg, #050014 0%, #08001f 100%);
 }
 
 .astral-planet {
