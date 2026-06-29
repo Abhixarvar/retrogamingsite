@@ -41,7 +41,16 @@
     star.className = 'shooting-star';
     star.style.left = Math.random() * 60 + '%';
     star.style.top = Math.random() * 40 + '%';
-    star.style.transform = `rotate(${30 + Math.random() * 20}deg)`;
+    
+    // Set rotation via CSS variable to avoid overriding animation translate
+    const rotation = 30 + Math.random() * 20;
+    star.style.setProperty('--rot', `${rotation}deg`);
+
+    // Pick a random vibrant color
+    const colors = ['#00f0ff', '#b44aff', '#ff6b9d', '#ffd700', '#ffffff'];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    star.style.setProperty('--color', color);
+
     container.appendChild(star);
     setTimeout(() => star.remove(), 1500);
   }
