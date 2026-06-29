@@ -6,18 +6,18 @@
   <meta name="description" content="Pac-Man — Navigate the galactic maze in Space Arcade!">
   <title>Pac-Man — Space Arcade</title>
   <link rel="icon" type="image/svg+xml" href="../assets/spaceship.svg">
-  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/style.css?v=4">
 </head>
-<body>
+<body class="no-scroll">
 
   <div id="starfield"></div>
 
-  <a href="../index.html" class="back-btn" id="back-btn">← Arcade</a>
-
-  <div class="page-content game-page">
-    <div class="game-header">
-      <h1>Pac-Man</h1>
-    </div>
+  <div class="page-content game-page compact-page">
+    <header class="arcade-header game-arcade-header">
+      <a href="../index.html" class="arcade-logo-link">
+        <h1 class="arcade-logo small">SPACE ARCADE</h1>
+      </a>
+    </header>
     <div class="game-hud">
       <div>Score: <span class="value" id="score">0</span></div>
       <div>Lives: <span class="value" id="lives">3</span></div>
@@ -35,7 +35,7 @@
     <div class="overlay-title">Pac-Man</div>
     <p class="overlay-score">Eat all the dots and dodge the ghosts! 👻</p>
     <div class="overlay-buttons">
-      <button class="btn btn-primary" id="start-btn">Start Mission</button>
+      <button class="btn btn-primary" id="start-btn" data-tip="🚀 Click to begin your mission!">Start Mission</button>
     </div>
   </div>
 
@@ -44,8 +44,8 @@
     <div class="overlay-title" id="gameover-title">Game Over</div>
     <p class="overlay-score" id="gameover-text">Score: <span class="highlight">0</span></p>
     <div class="overlay-buttons">
-      <button class="btn btn-primary" id="retry-btn">Try Again</button>
-      <a href="../index.html" class="btn btn-secondary">Back to Arcade</a>
+      <button class="btn btn-primary" id="retry-btn" data-tip="💪 Don't give up! Try again!">Try Again</button>
+      <a href="../index.html" class="btn btn-secondary" data-tip="🏠 Go back and pick another game!">Back to Arcade</a>
     </div>
   </div>
 
@@ -62,6 +62,7 @@
   <script src="../js/cursor.js"></script>
   <script src="../js/audio.js"></script>
   <script src="../js/volume.js"></script>
+  <script src="../js/tooltips.js"></script>
   <script src="pacman.js"></script>
 
 </body>

@@ -6,50 +6,39 @@
   <meta name="description" content="Space Arcade — Play retro games like Snake, Pac-Man, and Space Troopers in a cosmic space adventure!">
   <title>Space Arcade — Retro Games</title>
   <link rel="icon" type="image/svg+xml" href="assets/spaceship.svg">
-  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="stylesheet" href="css/style.css?v=4">
 </head>
-<body>
+<body class="no-scroll">
 
   <!-- Starfield Background -->
   <div id="starfield"></div>
 
   <!-- Page Content -->
-  <div class="page-content">
+  <div class="page-content compact-page">
 
-    <!-- Astral Background Elements -->
-    <div class="astral-bg">
-      <div class="astral-planet"></div>
-      <div class="astral-sun"></div>
-      <div class="astral-sun-halo"></div>
-      <div class="astral-grid-bottom"></div>
-      <div class="astral-grid-top"></div>
-      
-
-    </div>
-
-    <!-- Hero Section -->
-    <header class="hero synth-hero">
-      <h1 class="hero-title synth-title">SPACE ARCADE</h1>
+    <!-- Header Banner -->
+    <header class="arcade-header">
+      <h1 class="arcade-logo">SPACE ARCADE</h1>
     </header>
 
     <!-- Main Navigation Menu -->
     <section class="synth-nav">
-      <a href="singleplayer.html" class="synth-btn">SINGLEPLAYER GAMES</a>
-      <a href="party.html" target="_blank" class="synth-btn">ONLINE PARTY LOUNGE</a>
-      <a href="offline.html" class="synth-btn">LOCAL MULTIPLAYER</a>
-      <a href="#promo-section" class="synth-btn">MORE FROM US</a>
+      <a href="singleplayer.html" class="synth-btn" data-tip="🎮 Play awesome games all by yourself!">SINGLEPLAYER GAMES</a>
+      <a href="party.html" target="_blank" class="synth-btn" data-tip="🎉 Play with friends online in real time!">ONLINE PARTY LOUNGE</a>
+      <a href="offline.html" class="synth-btn" data-tip="👫 Share the keyboard and play with a friend next to you!">LOCAL MULTIPLAYER</a>
+      <a href="#promo-section" class="synth-btn" data-tip="🌟 Check out other cool stuff we made!">MORE FROM US</a>
     </section>
 
     <!-- Cross-Promotion Section -->
-    <section class="promo-section">
+    <section class="promo-section" id="promo-section">
       <h2 class="promo-title">Partner Networks</h2>
       <div class="promo-grid">
-        <a href="https://gamerecommendation-ai-nxyt.vercel.app/" target="_blank" class="promo-card">
+        <a href="https://gamerecommendation-ai-nxyt.vercel.app/" target="_blank" class="promo-card" data-tip="🤖 Let AI pick your next favorite game!">
           <div class="promo-icon">AI</div>
           <h3>Game Recommendation AI</h3>
           <p>Discover your next favorite game with our intelligent AI recommender.</p>
         </a>
-        <a href="https://phopee.vercel.app/" target="_blank" class="promo-card">
+        <a href="https://phopee.vercel.app/" target="_blank" class="promo-card" data-tip="📱 Find the perfect phone for you!">
           <div class="promo-icon">Mobile</div>
           <h3>Phopee</h3>
           <p>Find the perfect smartphone tailored to your needs and budget.</p>
@@ -74,6 +63,7 @@
   <script src="js/audio.js"></script>
   <script src="js/volume.js"></script>
   <script src="js/previews.js"></script>
+  <script src="js/tooltips.js"></script>
 
 </body>
 </html>

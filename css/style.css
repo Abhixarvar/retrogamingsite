@@ -49,6 +49,11 @@ body {
   position: relative;
 }
 
+body.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
+
 a { cursor: none; }
 button { cursor: none; }
 
@@ -128,6 +133,98 @@ button { cursor: none; }
   align-items: center;
 }
 
+.compact-page {
+  height: 100vh;
+  min-height: unset;
+  overflow: hidden;
+  justify-content: center;
+  padding: 10px 20px;
+}
+
+/* --- Arcade Header (used across all pages) --- */
+.arcade-header {
+  text-align: center;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.arcade-logo-link {
+  text-decoration: none;
+}
+
+.arcade-logo {
+  font-family: var(--font-glitch);
+  font-size: 4rem;
+  font-weight: 400;
+  color: #79ff12;
+  text-shadow: 0 0 10px #79ff12, 0 0 20px #5eff00, 0 0 40px #22aa00;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.arcade-logo.small {
+  font-size: 2rem;
+  letter-spacing: 3px;
+}
+
+.arcade-subtitle {
+  font-family: var(--font-funky);
+  font-size: 1rem;
+  color: var(--cyan);
+  letter-spacing: 4px;
+  margin-top: 8px;
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+}
+
+.game-arcade-header {
+  margin-bottom: 8px;
+}
+
+/* --- Kid-Friendly Tooltip --- */
+.kid-tooltip {
+  position: fixed;
+  z-index: 10001;
+  pointer-events: none;
+  background: rgba(10, 0, 30, 0.95);
+  color: #ffd700;
+  font-family: var(--font-playful);
+  font-size: 0.95rem;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 215, 0, 0.4);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.2), 0 4px 15px rgba(0, 0, 0, 0.5);
+  max-width: 280px;
+  line-height: 1.4;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  white-space: normal;
+}
+
+.kid-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Coming Soon Message --- */
+.coming-soon-msg {
+  text-align: center;
+  width: 100%;
+  padding: 40px;
+  color: var(--text-muted);
+  font-family: var(--font-playful);
+  font-size: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.coming-soon-msg .synth-btn {
+  margin-top: 10px;
+}
+
 /* --- Hero Section --- */
 .hero {
   text-align: center;
@@ -177,6 +274,25 @@ button { cursor: none; }
   padding: 40px 30px;
   max-width: 1100px;
   width: 100%;
+}
+
+.compact-grid {
+  gap: 16px;
+  padding: 10px 30px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.compact-grid .game-card {
+  padding: 16px 16px 14px;
+}
+
+.compact-grid .card-preview {
+  height: 100px;
+  margin-bottom: 8px;
+}
+
+.compact-grid .card-tagline {
+  display: none;
 }
 
 /* --- Game Card --- */
@@ -913,18 +1029,20 @@ button { cursor: none; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
+  height: 100vh;
+  padding: 10px;
+  gap: 6px;
 }
 
 .game-header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 6px;
 }
 
 .game-header h1 {
-  font-size: 2rem;
-  font-weight: 800;
+  font-family: var(--font-funky);
+  font-size: 1.6rem;
+  font-weight: 400;
   letter-spacing: 3px;
   text-transform: uppercase;
   background: linear-gradient(135deg, var(--cyan), var(--purple));
@@ -936,10 +1054,11 @@ button { cursor: none; }
 .game-hud {
   display: flex;
   gap: 30px;
-  margin-bottom: 15px;
-  font-size: 1.1rem;
+  margin-bottom: 6px;
+  font-size: 1rem;
   font-weight: 600;
   letter-spacing: 1px;
+  flex-shrink: 0;
 }
 
 .game-hud span {
@@ -956,18 +1075,24 @@ button { cursor: none; }
   overflow: hidden;
   box-shadow: var(--glow-cyan);
   background: rgba(0, 0, 0, 0.4);
+  flex-shrink: 1;
+  max-height: 60vh;
 }
 
 .game-canvas-wrap canvas {
   display: block;
+  max-height: 60vh;
+  width: auto;
+  height: auto;
 }
 
 .game-controls-hint {
-  margin-top: 16px;
+  margin-top: 6px;
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 300;
   letter-spacing: 1px;
+  flex-shrink: 0;
 }
 
 .game-controls-hint kbd {

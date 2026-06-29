@@ -3,40 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Space Arcade — Play retro games like Snake, Pac-Man, and Space Troopers in a cosmic space adventure!">
-  <title>Space Arcade — Retro Games</title>
+  <meta name="description" content="Space Arcade — Local multiplayer games coming soon!">
+  <title>Space Arcade — Local Multiplayer</title>
   <link rel="icon" type="image/svg+xml" href="assets/spaceship.svg">
-  <link rel="stylesheet" href="css/style.css?v=2">
+  <link rel="stylesheet" href="css/style.css?v=4">
 </head>
-<body>
+<body class="no-scroll">
 
   <!-- Starfield Background -->
   <div id="starfield"></div>
 
   <!-- Page Content -->
-  <div class="page-content">
+  <div class="page-content compact-page">
 
-    <header class="hero" style="position: relative;">
-      <a href="index.html" class="back-btn" style="position: absolute; top: 0; left: 0;">← Home</a>
-      <h1 class="hero-title">Offline Multiplayer</h1>
-      <p class="hero-subtitle">Local couch co-op & versus games <span>Coming Soon!</span></p>
+    <!-- Header Banner -->
+    <header class="arcade-header">
+      <a href="index.html" class="arcade-logo-link">
+        <h1 class="arcade-logo">SPACE ARCADE</h1>
+      </a>
+      <p class="arcade-subtitle">LOCAL MULTIPLAYER</p>
     </header>
 
     <!-- Game Cards Grid -->
-    <section class="games-grid" id="games-grid">
-
-
-
-      <div style="text-align: center; width: 100%; padding: 40px; color: var(--text-muted); font-size: 1.2rem;">
-        No offline multiplayer missions available right now.<br>Check back later, Commander!
+    <section class="games-grid compact-grid" id="games-grid">
+      <div class="coming-soon-msg">
+        <p>🚀 No offline multiplayer missions available yet!</p>
+        <p>Check back soon, Commander!</p>
+        <a href="index.html" class="synth-btn" data-tip="🏠 Go back to the main menu!">BACK TO ARCADE</a>
       </div>
-
     </section>
-
-    <!-- Footer Teaser -->
-    <footer class="footer-teaser">
-      <p>More missions coming soon… <span class="rocket"></span></p>
-    </footer>
 
   </div>
 
@@ -54,7 +49,7 @@
   <script src="js/cursor.js"></script>
   <script src="js/audio.js"></script>
   <script src="js/volume.js"></script>
-  <script src="js/previews.js"></script>
+  <script src="js/tooltips.js"></script>
 
 </body>
 </html>
