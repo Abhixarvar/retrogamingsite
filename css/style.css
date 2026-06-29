@@ -136,9 +136,15 @@ button { cursor: none; }
 .compact-page {
   height: 100vh;
   min-height: unset;
-  overflow: hidden;
   justify-content: center;
   padding: 10px 20px;
+}
+
+.home-page {
+  height: 100vh;
+  min-height: unset;
+  justify-content: center;
+  padding: 20px;
 }
 
 /* --- Arcade Header (used across all pages) --- */
@@ -283,16 +289,59 @@ button { cursor: none; }
 }
 
 .compact-grid .game-card {
-  padding: 16px 16px 14px;
+  padding: 12px;
 }
 
 .compact-grid .card-preview {
-  height: 100px;
-  margin-bottom: 8px;
+  height: 120px;
+  margin-bottom: 0;
 }
 
 .compact-grid .card-tagline {
   display: none;
+}
+
+/* --- Thumbnail Card (title overlaid on preview) --- */
+.thumb-card {
+  padding: 10px;
+}
+
+.thumb-wrap {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.thumb-wrap .card-preview {
+  margin-bottom: 0;
+  width: 100%;
+  height: 140px;
+  display: block;
+}
+
+.thumb-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 12px;
+  font-family: var(--font-funky);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+
+.thumb-card .card-play-btn {
+  margin-top: 6px;
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  opacity: 1;
+  transform: none;
 }
 
 /* --- Game Card --- */
@@ -1576,6 +1625,52 @@ button { cursor: none; }
   line-height: 1.4;
 }
 
+/* --- Promo Ad Banner (slim bottom bar) --- */
+.promo-banner {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 24px;
+  background: rgba(10, 0, 30, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 0, 127, 0.25);
+  border-radius: 30px;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+.promo-banner-label {
+  font-family: var(--font-funky);
+  font-size: 0.7rem;
+  color: var(--pink);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.promo-banner-link {
+  font-family: var(--font-playful);
+  font-size: 0.85rem;
+  color: var(--cyan);
+  text-decoration: none;
+  transition: color 0.2s, text-shadow 0.2s;
+  letter-spacing: 1px;
+}
+
+.promo-banner-link:hover {
+  color: #fff;
+  text-shadow: 0 0 10px var(--cyan);
+}
+
+.promo-banner-sep {
+  color: rgba(255,255,255,0.2);
+  font-size: 0.8rem;
+}
+
 /* --- Astral / Synthwave Background Redesign --- */
 .astral-bg {
   position: absolute;
@@ -1674,7 +1769,3 @@ button { cursor: none; }
   100% { transform: translate(-50%, -50%) translateY(-30px); filter: drop-shadow(0 0 50px rgba(0, 240, 255, 0.8)); }
 }
 
-/* Override .promo-section margin to make it compact */
-.promo-section {
-  margin-top: 2rem !important;
-}

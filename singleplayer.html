@@ -6,7 +6,7 @@
   <meta name="description" content="Space Arcade — Play retro games like Snake, Pac-Man, and Space Troopers in a cosmic space adventure!">
   <title>Space Arcade — Single Player</title>
   <link rel="icon" type="image/svg+xml" href="assets/spaceship.svg">
-  <link rel="stylesheet" href="css/style.css?v=4">
+  <link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body class="no-scroll">
 
@@ -19,7 +19,7 @@
     <!-- Header Banner -->
     <header class="arcade-header">
       <a href="index.html" class="arcade-logo-link">
-        <h1 class="arcade-logo">SPACE ARCADE</h1>
+        <h1 class="arcade-logo small">SPACE ARCADE</h1>
       </a>
       <p class="arcade-subtitle">SINGLEPLAYER MISSIONS</p>
     </header>
@@ -28,30 +28,38 @@
     <section class="games-grid compact-grid" id="games-grid">
 
       <!-- Snake -->
-      <a href="games/snake.html" target="_blank" class="game-card" data-game="snake" id="card-snake" data-tip="🐍 Guide your space worm and collect stars! Use arrow keys to move.">
-        <canvas class="card-preview" id="preview-snake" width="280" height="150"></canvas>
-        <h2 class="card-title">Space Worm</h2>
+      <a href="games/snake.html" target="_blank" class="game-card thumb-card" data-game="snake" id="card-snake" data-tip="🐍 Guide your space worm and collect stars! Use arrow keys to move.">
+        <div class="thumb-wrap">
+          <canvas class="card-preview" id="preview-snake" width="280" height="150"></canvas>
+          <h2 class="thumb-title">Space Worm</h2>
+        </div>
         <span class="card-play-btn">Launch Mission</span>
       </a>
 
       <!-- Pac-Man -->
-      <a href="games/pacman.html" target="_blank" class="game-card" data-game="pacman" id="card-pacman" data-tip="👻 Eat all the dots and run from ghosts! Use arrow keys to move.">
-        <canvas class="card-preview" id="preview-pacman" width="280" height="150"></canvas>
-        <h2 class="card-title">Pac-Man</h2>
+      <a href="games/pacman.html" target="_blank" class="game-card thumb-card" data-game="pacman" id="card-pacman" data-tip="👻 Eat all the dots and run from ghosts! Use arrow keys to move.">
+        <div class="thumb-wrap">
+          <canvas class="card-preview" id="preview-pacman" width="280" height="150"></canvas>
+          <h2 class="thumb-title">Pac-Man</h2>
+        </div>
         <span class="card-play-btn">Launch Mission</span>
       </a>
 
       <!-- Space Troopers -->
-      <a href="games/troopers.html" target="_blank" class="game-card" data-game="troopers" id="card-troopers" data-tip="👾 Shoot the aliens before they reach you! Use arrows to move, Space to fire.">
-        <canvas class="card-preview" id="preview-troopers" width="280" height="150"></canvas>
-        <h2 class="card-title">Space Troopers</h2>
+      <a href="games/troopers.html" target="_blank" class="game-card thumb-card" data-game="troopers" id="card-troopers" data-tip="👾 Shoot the aliens before they reach you! Use arrows to move, Space to fire.">
+        <div class="thumb-wrap">
+          <canvas class="card-preview" id="preview-troopers" width="280" height="150"></canvas>
+          <h2 class="thumb-title">Space Troopers</h2>
+        </div>
         <span class="card-play-btn">Launch Mission</span>
       </a>
 
       <!-- Tetris -->
-      <a href="games/tetris.html" target="_blank" class="game-card" data-game="tetris" id="card-tetris" data-tip="🧱 Stack the blocks and clear lines! Use arrows to move, Up to rotate.">
-        <canvas class="card-preview" id="preview-tetris" width="280" height="150"></canvas>
-        <h2 class="card-title">Cosmic Blocks</h2>
+      <a href="games/tetris.html" target="_blank" class="game-card thumb-card" data-game="tetris" id="card-tetris" data-tip="🧱 Stack the blocks and clear lines! Use arrows to move, Up to rotate.">
+        <div class="thumb-wrap">
+          <canvas class="card-preview" id="preview-tetris" width="280" height="150"></canvas>
+          <h2 class="thumb-title">Cosmic Blocks</h2>
+        </div>
         <span class="card-play-btn">Launch Mission</span>
       </a>
 
