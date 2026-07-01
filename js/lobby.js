@@ -53,13 +53,14 @@
   let roomCode = '';
   let selectedGame = 'pong';
   let myReady = false;
+  let isPlayingInIframe = false; // Track whether this player has a game loaded in their iframe
 
   // Host state
-  let guestConnections = []; // Array of guest PeerJS connection objects
-  let members = []; // Array of member objects: { peerId, name, role, ready, status }
+  let guestConnections = [];
+  let members = [];
 
   // Guest state
-  let hostConn = null; // Connection to the host
+  let hostConn = null;
 
   // ─── UI Rendering ────────────────────────────────────
   function hideAllOverlays() {
@@ -85,10 +86,8 @@
       const slot = document.createElement('div');
       slot.className = 'member-slot' + (isMe ? ' active-member' : '');
 
-      // Avatar emoji based on role
       const avatarEmoji = m.role === 'host' ? '👑' : '🛸';
 
-      // Status text
       let statusText = m.status || 'Lobby';
       if (m.ready) {
         statusText = 'READY';
@@ -114,14 +113,15 @@
     // Update buttons visibility
     if (isHost) {
       gameSelect.disabled = false;
-      playSingleplayerBtn.style.display = 'inline-block';
+      if (!isPlayingInIframe) {
+        playSingleplayerBtn.style.display = 'inline-block';
+      }
       
-      // Show Launch button if all members are ready
       const allReady = members.every(m => m.ready || m.role === 'host');
       const hasGuests = members.length > 1;
       const isMultiplayer = selectedGame === 'pong' || selectedGame === 'molehammer';
 
-      if (allReady && hasGuests && isMultiplayer) {
+      if (allReady && hasGuests && isMultiplayer && !isPlayingInIframe) {
         launchBtn.classList.remove('hidden');
       } else {
         launchBtn.classList.add('hidden');
@@ -334,34 +334,47 @@
           gameSelect.value = selectedGame;
           renderMembers();
           
+          // IMPORTANT: If we are already playing in the iframe, do NOT
+          // reset the viewport. Just update the sidebar and leave the game running.
+          if (isPlayingInIframe) {
+            break;
+          }
+
           const hostMember = members.find(m => m.role === 'host');
           if (hostMember && hostMember.status && hostMember.status.includes('Playing')) {
             spectateTargetName.textContent = hostMember.name;
-            // Only show spectator view if we aren't currently playing in our own iframe window
-            if (stateGameIframeWrap.classList.contains('hidden')) {
-              showViewportState(stateSpectatorScreen);
-              updateViewportHeader(hostMember.status);
-            }
+            showViewportState(stateSpectatorScreen);
+            updateViewportHeader(hostMember.status);
           } else {
             showViewportState(stateLobbyScreen);
             updateViewportHeader('Lobby Lounge', false);
             spectatorImg.style.display = 'none';
             spectatorPlaceholder.style.display = 'block';
-            gameIframe.src = ''; // reset guest iframe back to lobby
           }
           break;
 
         case 'ARCADE_FRAME':
-          spectatorImg.src = data.dataUrl;
-          spectatorImg.style.display = 'block';
-          spectatorPlaceholder.style.display = 'none';
+          if (!isPlayingInIframe) {
+            spectatorImg.src = data.dataUrl;
+            spectatorImg.style.display = 'block';
+            spectatorPlaceholder.style.display = 'none';
+          }
           break;
 
         case 'LAUNCH':
-          // Instead of redirecting Guest, load the multiplayer game inside their iframe window
+          // Load the multiplayer game inside the guest's iframe
+          isPlayingInIframe = true;
           gameIframe.src = `games/${data.game}.html?role=guest&room=${data.sessionId}&name=${encodeURIComponent(myName)}`;
           showViewportState(stateGameIframeWrap);
           updateViewportHeader(`Playing ${data.game}`);
+          break;
+
+        case 'GAME_ENDED':
+          // Host told us the game session ended; return to lobby view
+          isPlayingInIframe = false;
+          gameIframe.src = '';
+          showViewportState(stateLobbyScreen);
+          updateViewportHeader('Lobby Lounge', false);
           break;
       }
     });
@@ -388,10 +401,12 @@
     
     isHost = false;
     myReady = false;
+    isPlayingInIframe = false;
     members = [];
   }
 
   function stopSingleplayerGame() {
+    isPlayingInIframe = false;
     if (gameIframe) gameIframe.src = '';
     showViewportState(stateLobbyScreen);
     if (playSingleplayerBtn) playSingleplayerBtn.style.display = 'inline-block';
@@ -400,6 +415,7 @@
     if (isHost && members.length > 0) {
       members[0].status = 'Lobby';
       broadcast({ type: 'ROOM_UPDATE', members: members, game: selectedGame });
+      broadcast({ type: 'GAME_ENDED' });
       renderMembers();
       updateViewportHeader('Host Lobby');
     }
@@ -409,7 +425,6 @@
     if (!e.data || e.data.type !== 'ARCADE_FRAME') return;
 
     if (isHost && guestConnections.length > 0) {
-      // Forward spectator frames to guests ONLY if host is playing a singleplayer game (not during multiplayer layout)
       const hostMember = members[0];
       if (hostMember && hostMember.status && !hostMember.status.includes('Pong') && !hostMember.status.includes('Mole')) {
         broadcast({
@@ -454,6 +469,7 @@
 
   playSingleplayerBtn.addEventListener('click', () => {
     if (isHost) {
+      isPlayingInIframe = true;
       const filePrefix = selectedGame;
       gameIframe.src = `games/${filePrefix}.html`;
       showViewportState(stateGameIframeWrap);
@@ -492,13 +508,16 @@
   launchBtn.addEventListener('click', () => {
     if (isHost) {
       const sessionId = Math.random().toString(36).substring(2, 8).toUpperCase();
+
+      // Send LAUNCH to all guests FIRST, before any ROOM_UPDATE
       broadcast({
         type: 'LAUNCH',
         game: selectedGame,
         sessionId: sessionId
       });
 
-      // Instead of redirecting Host, load the multiplayer game inside the Host's iframe window
+      // Load for host
+      isPlayingInIframe = true;
       gameIframe.src = `games/${selectedGame}.html?role=host&room=${sessionId}&name=${encodeURIComponent(myName)}`;
       showViewportState(stateGameIframeWrap);
       
@@ -507,8 +526,13 @@
 
       const gameLabel = gameSelect.options[gameSelect.selectedIndex].text.split(' (')[0];
       members[0].status = `Playing ${gameLabel}`;
-      broadcast({ type: 'ROOM_UPDATE', members: members, game: selectedGame });
-      renderMembers();
+
+      // Delay ROOM_UPDATE slightly so guests process LAUNCH first
+      setTimeout(() => {
+        broadcast({ type: 'ROOM_UPDATE', members: members, game: selectedGame });
+        renderMembers();
+      }, 500);
+
       updateViewportHeader(`Playing ${gameLabel}`);
     }
   });
