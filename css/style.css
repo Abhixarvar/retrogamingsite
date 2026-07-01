@@ -1871,3 +1871,12 @@ button { cursor: none; }
   100% { transform: translate(-50%, -50%) translateY(-30px); filter: drop-shadow(0 0 50px rgba(0, 240, 255, 0.8)); }
 }
 
+/* --- Restore Default Cursors --- */
+body, html, a, button, select, input, .btn, .back-btn, .lobby-input, .synth-btn, .game-card {
+  cursor: auto !important;
+}
+a, button, select, .btn, .back-btn, .synth-btn, .game-card, .hilt-btn {
+  cursor: pointer !important;
+}
+
+
