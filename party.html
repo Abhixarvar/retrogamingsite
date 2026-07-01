@@ -7,6 +7,318 @@
   <title>Multiplayer Lounge — Space Arcade</title>
   <link rel="icon" type="image/svg+xml" href="assets/spaceship.svg">
   <link rel="stylesheet" href="css/style.css?v=2">
+  <style>
+    /* ===== Discord-Style Lounge Redesign ===== */
+    .discord-lounge {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      background: #060216;
+      font-family: var(--font);
+      overflow: hidden;
+    }
+
+    .lounge-sidebar {
+      width: 320px;
+      background: #0b0625;
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      flex-direction: column;
+      padding: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .sidebar-header {
+      margin-bottom: 1.2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 1rem;
+    }
+
+    .lounge-code-title {
+      font-family: var(--font-funky);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      color: var(--pink);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .members-section {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 1.2rem;
+      padding-right: 4px;
+    }
+
+    /* Scrollbar for sidebar */
+    .members-section::-webkit-scrollbar {
+      width: 4px;
+    }
+    .members-section::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+    }
+
+    .section-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .member-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .member-slot {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: var(--radius-md);
+      transition: all 0.25s ease;
+    }
+
+    .member-slot.active-member {
+      background: rgba(0, 240, 255, 0.03);
+      border-color: rgba(0, 240, 255, 0.15);
+    }
+
+    .avatar-wrap {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      flex-shrink: 0;
+    }
+
+    .status-dot {
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      border: 2px solid #0b0625;
+    }
+
+    .status-dot.online { background: #00ff88; box-shadow: 0 0 6px #00ff88; }
+    .status-dot.idle { background: #ffaa00; }
+    .status-dot.offline { background: #888; }
+
+    .member-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .member-name {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .role-tag {
+      font-size: 0.6rem;
+      background: rgba(0, 240, 255, 0.12);
+      color: var(--cyan);
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .member-status {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 1px;
+    }
+
+    .mic-icon {
+      font-size: 0.85rem;
+      opacity: 0.5;
+      animation: bounceMic 2s infinite alternate;
+    }
+
+    @keyframes bounceMic {
+      from { transform: scale(0.9); }
+      to { transform: scale(1.1); }
+    }
+
+    .lounge-viewport {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .viewport-header {
+      height: 60px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      background: #08031d;
+    }
+
+    .game-status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-funky);
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      color: #fff;
+    }
+
+    .status-indicator-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--cyan);
+    }
+
+    .status-indicator-dot.active {
+      background: #00ff88;
+      box-shadow: 0 0 10px #00ff88;
+    }
+
+    .status-indicator-dot.animate-pulse {
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    .viewport-content {
+      flex: 1;
+      position: relative;
+      background: #03010b;
+      overflow: hidden;
+    }
+
+    .viewport-state {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .welcome-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      padding: 2rem;
+      max-width: 550px;
+      margin: 0 auto;
+    }
+
+    .welcome-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1.2rem;
+      animation: floatShip 4s ease-in-out infinite alternate;
+    }
+
+    .welcome-screen h2 {
+      font-family: var(--font-funky);
+      font-weight: 400;
+      font-size: 1.6rem;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, var(--cyan), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .welcome-screen p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    /* Spectator Stream HUD */
+    .spectator-hud {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.75);
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      font-size: 0.8rem;
+      color: #fff;
+    }
+
+    .live-tag {
+      background: #ff0055;
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 800;
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      box-shadow: 0 0 8px #ff0055;
+    }
+
+    .spectator-view-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      height: 100%;
+      position: relative;
+    }
+
+    .spectator-placeholder {
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .sidebar-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 1rem;
+      margin-top: auto;
+    }
+
+    @media (max-width: 768px) {
+      .discord-lounge { flex-direction: column; }
+      .lounge-sidebar { width: 100%; height: auto; max-height: 45vh; }
+      .lounge-viewport { height: 55vh; }
+    }
+  </style>
 </head>
 <body>
 
@@ -22,22 +334,22 @@
     </div>
   </div>
 
-  <!-- Multiplayer Global Lobby Overlays (now acting as page content) -->
+  <!-- Multiplayer Global Lobby Overlays -->
   <div class="game-overlay" id="global-lobby-overlay">
     <div class="pong-lobby" style="max-width: 650px;">
       <a href="index.html" class="btn btn-secondary" style="position: absolute; top: 1rem; left: 1rem; padding: 0.5rem 1rem; text-decoration: none;">← Back</a>
       <div class="lobby-title">Multiplayer Lounge</div>
-      <div class="lobby-subtitle">Connect with a friend to play together ⚡</div>
+      <div class="lobby-subtitle">Create a room and invite up to 3 friends! ⚡</div>
       <div class="lobby-stars">✦ ✧ ✦ ✧ ✦ ✧ ✦</div>
       <div class="lobby-divider">✧ CHOOSE YOUR PATH ✧</div>
       <div class="lobby-options">
         <!-- Create Room -->
         <div class="lobby-option" id="create-option">
-          <span class="option-icon"></span>
+          <span class="option-icon">🚀</span>
           <h3>Create Room</h3>
-          <p class="option-desc">Host a new room and invite a friend with your unique code</p>
+          <p class="option-desc">Host a room. You can play singleplayer while waiting, and others will watch you!</p>
           <div class="lobby-input-wrap">
-            <span class="input-icon"></span>
+            <span class="input-icon">👾</span>
             <input type="text" class="lobby-input" id="create-name" placeholder="Your cosmic name" maxlength="12" autocomplete="off">
           </div>
           <button class="btn btn-create btn-lobby" id="create-btn">Create Room ✦</button>
@@ -45,15 +357,15 @@
         </div>
         <!-- Join Room -->
         <div class="lobby-option" id="join-option">
-          <span class="option-icon"></span>
+          <span class="option-icon">🔑</span>
           <h3>Join Room</h3>
-          <p class="option-desc">Enter a room code shared by your friend to join</p>
+          <p class="option-desc">Enter a room code shared by your friend to join the watch party & play</p>
           <div class="lobby-input-wrap">
-            <span class="input-icon"></span>
+            <span class="input-icon">👾</span>
             <input type="text" class="lobby-input" id="join-name" placeholder="Your cosmic name" maxlength="12" autocomplete="off">
           </div>
           <div class="lobby-input-wrap">
-            <span class="input-icon"></span>
+            <span class="input-icon">🔑</span>
             <input type="text" class="lobby-input code-input" id="join-code" placeholder="ROOM CODE" maxlength="6" autocomplete="off">
           </div>
           <button class="btn btn-join btn-lobby" id="join-btn">Join Room ✦</button>
@@ -63,76 +375,112 @@
     </div>
   </div>
 
-  <!-- Waiting Overlay -->
-  <div class="game-overlay hidden" id="waiting-overlay">
-    <div class="waiting-room">
-      <div class="overlay-title">Room Created</div>
-      <p class="overlay-score">Share this code with your friend:</p>
-      <div class="room-code-display" id="room-code-box">
-        <span class="code" id="display-code">------</span>
-        <span class="copy-hint">Click to copy</span>
-      </div>
-      <div class="waiting-spinner"></div>
-      <p class="overlay-score">Waiting for connection…</p>
-      <div class="overlay-buttons">
-        <button class="btn btn-secondary" id="cancel-wait-btn">Cancel</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Connecting Overlay -->
   <div class="game-overlay hidden" id="connecting-overlay">
     <div class="waiting-room">
       <div class="overlay-title">Connecting</div>
       <div class="waiting-spinner"></div>
-      <p class="overlay-score">Joining room…</p>
+      <p class="overlay-score">Entering lounge...</p>
       <div class="overlay-buttons">
         <button class="btn btn-secondary" id="cancel-connect-btn">Cancel</button>
       </div>
     </div>
   </div>
 
-  <!-- Room UI Overlay (Game Selection) -->
-  <div class="game-overlay hidden" id="room-ui-overlay">
-    <div class="waiting-room" style="max-width: 600px; width: 90%;">
-      <div class="overlay-title">Lounge Room</div>
-      <div class="players-container" style="display: flex; justify-content: space-around; margin: 2rem 0;">
-        <div class="player-slot">
-          <h3 id="room-p1-name" style="color: var(--neon-blue); font-size: 1.5rem;">Player 1</h3>
-          <span id="room-p1-status" style="color: var(--text-muted);">Not Ready</span>
+  <!-- Room UI (Discord-Style voice lounge & main view) -->
+  <div class="game-overlay hidden" id="room-ui-overlay" style="padding: 0; background: #060216; z-index: 90;">
+    <div class="discord-lounge">
+      <!-- Left Sidebar -->
+      <aside class="lounge-sidebar">
+        <div class="sidebar-header">
+          <div class="lounge-code-title">COSMIC LOUNGE</div>
+          <div class="room-code-display" id="room-code-box" style="margin: 0.5rem 0; width: 100%; padding: 10px 15px; border-color: rgba(255, 0, 127, 0.3);">
+            <span class="code" id="display-code" style="font-size: 1.6rem; letter-spacing: 4px; color: var(--pink);">------</span>
+            <span class="copy-hint" style="font-size: 0.65rem;">Click to copy room code</span>
+          </div>
         </div>
-        <div class="pong-vs">VS</div>
-        <div class="player-slot">
-          <h3 id="room-p2-name" style="color: var(--neon-pink); font-size: 1.5rem;">Player 2</h3>
-          <span id="room-p2-status" style="color: var(--text-muted);">Not Ready</span>
+        
+        <div class="members-section">
+          <div class="section-title">ACTIVE MEMBERS (<span id="member-count">1</span>/4)</div>
+          <div class="member-list" id="member-list">
+            <!-- Dynamically populated slots -->
+          </div>
         </div>
-      </div>
-      
-      <div class="game-selection" style="margin-bottom: 2rem;">
-        <h4 style="color: white; margin-bottom: 1rem;">Select Game</h4>
-        <select id="game-select" class="lobby-input" style="width: 100%; text-align: center; cursor: pointer;">
-          <option value="pong">Cosmic Pong (Multiplayer)</option>
-          <option value="snake">Space Worm (Sync Start)</option>
-          <option value="pacman">Pac-Man (Sync Start)</option>
-          <option value="troopers">Space Troopers (Sync Start)</option>
-          <option value="tetris">Cosmic Blocks (Sync Start)</option>
-          <option value="molehammer">Mole Hammer (Multiplayer)</option>
-        </select>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;" id="game-select-hint">Only the host can change the game.</p>
-      </div>
 
-      <div class="overlay-buttons" style="flex-direction: column; gap: 1rem;">
-        <button class="btn btn-primary" id="ready-btn" style="width: 100%;">I'm Ready</button>
-        <button class="btn btn-create hidden" id="launch-game-btn" style="width: 100%;">Launch Game </button>
-        <button class="btn btn-secondary" id="leave-room-btn" style="width: 100%;">Leave Room</button>
-      </div>
+        <div class="sidebar-footer">
+          <div class="game-selection">
+            <label for="game-select" style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px;">Launch Target</label>
+            <select id="game-select" class="lobby-input" style="width: 100%; padding: 10px 10px 10px 12px; font-size: 0.85rem; border-color: rgba(0, 240, 255, 0.2);">
+              <option value="pong">Cosmic Pong (Multiplayer)</option>
+              <option value="molehammer">Mole Hammer (Multiplayer)</option>
+              <option value="snake">Space Worm (Singleplayer)</option>
+              <option value="pacman">Pac-Man (Singleplayer)</option>
+              <option value="troopers">Space Troopers (Singleplayer)</option>
+              <option value="tetris">Cosmic Blocks (Singleplayer)</option>
+            </select>
+          </div>
+          <div class="action-buttons" style="margin-top: 1rem; display: flex; flex-direction: column; gap: 8px;">
+            <button class="btn btn-primary" id="ready-btn" style="padding: 10px 20px; font-size: 0.85rem; width: 100%;">I'm Ready</button>
+            <button class="btn btn-create hidden" id="launch-game-btn" style="padding: 10px 20px; font-size: 0.85rem; width: 100%;">Launch Game ✦</button>
+            <button class="btn btn-secondary" id="leave-room-btn" style="padding: 10px 20px; font-size: 0.85rem; width: 100%;">Leave Room</button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Arcade Viewport -->
+      <main class="lounge-viewport">
+        <header class="viewport-header">
+          <div class="game-status-indicator">
+            <span class="status-indicator-dot active animate-pulse" id="status-indicator-dot"></span>
+            <span id="viewport-status-text">HOST LOBBY</span>
+          </div>
+          <div class="host-controls" id="host-game-controls" style="display: none;">
+            <button class="btn btn-secondary" id="play-singleplayer-btn" style="padding: 6px 16px; font-size: 0.75rem; border-color: var(--cyan); color: var(--cyan); background: rgba(0, 240, 255, 0.05);">Play Game</button>
+            <button class="btn btn-secondary" id="stop-singleplayer-btn" style="padding: 6px 16px; font-size: 0.75rem; display: none;">Exit Window</button>
+          </div>
+        </header>
+
+        <div class="viewport-content">
+          <!-- State 1: Inactive/Lobby Display -->
+          <div class="viewport-state" id="state-lobby-screen">
+            <div class="welcome-screen">
+              <span class="welcome-icon">👾</span>
+              <h2>COSMIC watch lounge</h2>
+              <p>Gather your friends to play or spectate. The Host can launch singleplayer retro games inside the dashboard and stream the gameplay live to everyone in the party!</p>
+              <div style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--cyan); border: 1px dashed rgba(0, 240, 255, 0.3); padding: 8px 16px; border-radius: 6px;">
+                💡 Tips: Select a singleplayer game and click <strong>Play Game</strong> to open a side-window.
+              </div>
+            </div>
+          </div>
+
+          <!-- State 2: Iframe Game screen (for Host playing singleplayer) -->
+          <div class="viewport-state hidden" id="state-game-iframe-wrap">
+            <iframe id="game-iframe" src="" style="width: 100%; height: 100%; border: none; background: transparent;"></iframe>
+          </div>
+
+          <!-- State 3: Canvas Spectating screen (for Guests watching Host) -->
+          <div class="viewport-state hidden" id="state-spectator-screen" style="position: relative;">
+            <div class="spectator-hud">
+              <span class="live-tag">LIVE</span>
+              <span>Watching <strong id="spectate-target-name">HOST</strong></span>
+            </div>
+            <div class="spectator-view-wrap">
+              <img id="spectator-img" alt="Live Spectator Feed" style="max-width: 100%; max-height: 90%; object-fit: contain; box-shadow: 0 0 40px rgba(0, 240, 255, 0.2); border: 2px solid var(--cyan); border-radius: 8px; background: #000;">
+              <div class="spectator-placeholder" id="spectator-placeholder">
+                <div class="waiting-spinner"></div>
+                <p style="margin-top: 10px; font-family: var(--font-funky); font-size: 0.9rem;">Waiting for host stream...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   </div>
 
   <!-- Disconnect Overlay -->
   <div class="game-overlay hidden" id="disconnect-overlay">
     <div class="overlay-title">Disconnected</div>
-    <p class="overlay-score">The other player has left the lounge.</p>
+    <p class="overlay-score" id="disconnect-text">The connection was lost.</p>
     <div class="overlay-buttons">
       <button class="btn btn-primary" id="back-lobby-btn">Back to Lounge</button>
     </div>
