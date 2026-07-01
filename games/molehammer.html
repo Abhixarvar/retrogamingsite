@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mole Hammer — 2-player whack-a-mole battle in Space Arcade! Red vs Blue — first to 10 wins!">
+  <title>Mole Hammer — Space Arcade</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/spaceship.svg">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* ===== Mole Hammer Specific Styles ===== */
+    .mole-hud {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .mole-player {
+      text-align: center;
+      min-width: 120px;
+    }
+
+    .mole-player .player-name {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+
+    .mole-player .player-score {
+      font-size: 2.2rem;
+      font-weight: 900;
+      transition: transform 0.2s;
+    }
+
+    .mole-player.red .player-name { color: #ff4466; text-shadow: 0 0 8px rgba(255, 68, 102, 0.4); }
+    .mole-player.red .player-score { color: #ff4466; }
+    .mole-player.blue .player-name { color: #44aaff; text-shadow: 0 0 8px rgba(68, 170, 255, 0.4); }
+    .mole-player.blue .player-score { color: #44aaff; }
+
+    .mole-vs {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    .mole-arena-wrap {
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(112, 0, 255, 0.2), 0 0 60px rgba(112, 0, 255, 0.1);
+      background: rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+
+    .mole-arena-wrap canvas {
+      display: block;
+      max-width: 90vw;
+      max-height: 55vh;
+    }
+
+    .mole-controls-hint {
+      margin-top: 8px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 300;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    .mole-controls-hint kbd {
+      display: inline-block;
+      padding: 3px 8px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 4px;
+      font-family: var(--font);
+      font-size: 0.8rem;
+      color: var(--cyan);
+      margin: 0 2px;
+    }
+
+    /* Role indicator */
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .role-badge.red {
+      background: rgba(255, 68, 102, 0.15);
+      border: 1px solid rgba(255, 68, 102, 0.4);
+      color: #ff4466;
+    }
+
+    .role-badge.blue {
+      background: rgba(68, 170, 255, 0.15);
+      border: 1px solid rgba(68, 170, 255, 0.4);
+      color: #44aaff;
+    }
+
+    /* Timer bar */
+    .mole-timer-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+
+    .mole-timer-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ff4466, #7000ff, #44aaff);
+      border-radius: 2px;
+      transition: width 0.1s linear;
+    }
+
+    @media (max-width: 768px) {
+      .mole-hud { gap: 20px; }
+      .mole-player .player-score { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="starfield"></div>
+
+  <a href="../index.html" class="back-btn" id="back-btn">← Arcade</a>
+
+  <div class="page-content game-page">
+    <div class="game-header">
+      <h1>Mole Hammer</h1>
+    </div>
+    <div class="mole-hud" id="mole-hud" style="display:none;">
+      <div class="mole-player red">
+        <div class="player-name" id="hud-name-red">Red</div>
+        <div class="player-score" id="hud-score-red">0</div>
+      </div>
+      <div class="mole-vs">VS</div>
+      <div class="mole-player blue">
+        <div class="player-name" id="hud-name-blue">Blue</div>
+        <div class="player-score" id="hud-score-blue">0</div>
+      </div>
+    </div>
+    <div id="role-badge-wrap" style="display:none; text-align: center;">
+      <span class="role-badge" id="role-badge">YOU ARE RED</span>
+    </div>
+    <div class="mole-arena-wrap" id="arena-wrap" style="display:none;">
+      <canvas id="game-canvas" width="750" height="500"></canvas>
+    </div>
+    <p class="mole-controls-hint" id="controls-hint" style="display:none;">
+      Click / Tap on your color moles to hammer them! First to <strong>10</strong> wins!
+    </p>
+  </div>
+
+  <!-- Lobby Overlay -->
+  <div class="game-overlay" id="lobby-overlay">
+    <div class="pong-lobby">
+      <div class="lobby-title">Mole Hammer</div>
+      <div class="lobby-subtitle">Smash moles faster than your rival! 🔨</div>
+      <div class="lobby-stars">✦ ✧ ✦ ✧ ✦ ✧ ✦</div>
+      <div class="lobby-divider">✧ CHOOSE YOUR PATH ✧</div>
+      <div class="lobby-options">
+        <!-- Create Room -->
+        <div class="lobby-option" id="create-option">
+          <span class="option-icon">🔨</span>
+          <h3>Create Room</h3>
+          <p class="option-desc">Host a new game and invite a friend with your unique room code</p>
+          <div class="lobby-input-wrap">
+            <span class="input-icon">👾</span>
+            <input type="text" class="lobby-input" id="create-name" placeholder="Your cosmic name" maxlength="12" autocomplete="off">
+          </div>
+          <button class="btn btn-create btn-lobby" id="create-btn">Create Room ✦</button>
+          <div class="lobby-error" id="create-error"></div>
+        </div>
+        <!-- Join Room -->
+        <div class="lobby-option" id="join-option">
+          <span class="option-icon">🌟</span>
+          <h3>Join Room</h3>
+          <p class="option-desc">Enter a room code shared by your friend to join their game</p>
+          <div class="lobby-input-wrap">
+            <span class="input-icon">👾</span>
+            <input type="text" class="lobby-input" id="join-name" placeholder="Your cosmic name" maxlength="12" autocomplete="off">
+          </div>
+          <div class="lobby-input-wrap">
+            <span class="input-icon">🔑</span>
+            <input type="text" class="lobby-input code-input" id="join-code" placeholder="ROOM CODE" maxlength="6" autocomplete="off">
+          </div>
+          <button class="btn btn-join btn-lobby" id="join-btn">Join Room ✦</button>
+          <div class="lobby-error" id="join-error"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Waiting Overlay -->
+  <div class="game-overlay hidden" id="waiting-overlay">
+    <div class="waiting-room">
+      <div class="overlay-title">Room Created</div>
+      <p class="overlay-score">Share this code with your opponent:</p>
+      <div class="room-code-display" id="room-code-box">
+        <span class="code" id="display-code">------</span>
+        <span class="copy-hint">Click to copy</span>
+      </div>
+      <div class="waiting-spinner"></div>
+      <p class="overlay-score">Waiting for opponent…</p>
+      <div class="overlay-buttons">
+        <button class="btn btn-secondary" id="cancel-wait-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connecting Overlay -->
+  <div class="game-overlay hidden" id="connecting-overlay">
+    <div class="waiting-room">
+      <div class="overlay-title">Connecting</div>
+      <div class="waiting-spinner"></div>
+      <p class="overlay-score">Joining room…</p>
+      <div class="overlay-buttons">
+        <button class="btn btn-secondary" id="cancel-connect-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Countdown Overlay -->
+  <div class="game-overlay hidden" id="countdown-overlay">
+    <div class="countdown-number" id="countdown-num">3</div>
+  </div>
+
+  <!-- Game Over Overlay -->
+  <div class="game-overlay hidden" id="gameover-overlay">
+    <div class="overlay-title" id="gameover-title">Game Over</div>
+    <p class="overlay-score" id="gameover-text">Final Score</p>
+    <div class="overlay-buttons" id="gameover-buttons">
+      <button class="btn btn-primary" id="rematch-btn">Play Again</button>
+      <a href="../index.html" class="btn btn-secondary">Back to Arcade</a>
+    </div>
+    <div class="rematch-status" id="rematch-status"></div>
+  </div>
+
+  <!-- Disconnect Overlay -->
+  <div class="game-overlay hidden" id="disconnect-overlay">
+    <div class="overlay-title">Disconnected</div>
+    <p class="overlay-score">Your opponent has left the game.</p>
+    <div class="overlay-buttons">
+      <button class="btn btn-primary" id="back-lobby-btn">Back to Lobby</button>
+      <a href="../index.html" class="btn btn-secondary">Back to Arcade</a>
+    </div>
+  </div>
+
+  <!-- Lightsaber Volume UI -->
+  <div id="lightsaber-volume">
+    <div class="hilt-btn"></div>
+    <div class="blade-container">
+      <div class="blade-glow"></div>
+      <input type="range" min="0" max="1" step="0.01" value="0.5" class="volume-slider">
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+  <script src="../js/stars.js"></script>
+  <script src="../js/cursor.js"></script>
+  <script src="../js/audio.js"></script>
+  <script src="../js/volume.js"></script>
+  <script src="molehammer.js"></script>
+
+</body>
+</html>

@@ -3,3 +3,34 @@ games to add in future:
 2.pinball
 3.crossy road
 4.brick breaker
+
+
+Here is a list of the key technologies used in your **Space Arcade** retro gaming site and how they are being utilized:
+
+### 1. **HTML5 (Vanilla HTML)**
+*   **How it's used**: Used to structure the content and layout of all the pages (e.g., `index.html`, `party.html`, `singleplayer.html`, `offline.html`). It utilizes semantic tags (like `<header>`, `<section>`) and standard form inputs to build the UI elements like the game selection menus and multiplayer lobbies.
+
+### 2. **CSS3 (Vanilla CSS)**
+*   **How it's used**: All the styling is done with pure CSS (found in the `css/` directory like `style.css` and `mobile-controls.css`), meaning no frameworks like Tailwind or Bootstrap are used. It is responsible for:
+    *   The retro, neon synth-wave aesthetic (glow effects, "scanline" overlays on buttons).
+    *   Responsive layouts (ensuring the site works on desktop and mobile).
+    *   Animations and transitions (e.g., the lightsaber volume slider glow and hover effects).
+
+### 3. **Vanilla JavaScript (ES6)**
+*   **How it's used**: The core logic of the site and the games are written in plain JavaScript without frontend frameworks like React or Vue. It handles:
+    *   **DOM Manipulation**: Updating the UI, showing/hiding overlays (like the multiplayer lobby screens), and handling button clicks.
+    *   **Visual Effects**: Generating the background starfield animation (`js/stars.js`) and custom cursor behaviors (`js/cursor.js`).
+    *   **Audio**: Managing game sounds and background music (`js/audio.js`, `js/volume.js`).
+    *   **Game Logic**: Running the actual game loops for the retro games (Snake, Pong, Pac-Man, etc.).
+
+### 4. **PeerJS (WebRTC)**
+*   **How it's used**: This is the magic behind your **Online Party Lounge** (`party.html` and `js/lobby.js`). 
+    *   PeerJS is a library that wraps around the browser's native WebRTC API. 
+    *   It allows players to connect directly to each other (Peer-to-Peer) using a 6-character room code. 
+    *   This enables real-time multiplayer gameplay (like syncing ready states, game selection, and real-time game inputs) *without* needing a dedicated backend server or WebSockets to constantly relay the data.
+
+### 5. **Vercel**
+*   **How it's used**: This is the deployment and hosting platform. You have a `vercel.json` configuration file at the root of your project which tells Vercel how to serve your site. It is specifically configured to:
+    *   Enforce security headers (`X-Frame-Options`, `X-Content-Type-Options`).
+    *   Set up aggressive caching for your CSS, JS, and image assets so the site loads incredibly fast for returning players.
+    *   Enforce clean URLs (hiding `.html` extensions).
