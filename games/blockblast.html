@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Block Blast — A space-themed puzzle blasting game in Space Arcade!">
+  <title>Block Blast — Space Arcade</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/spaceship.svg">
+  <link rel="stylesheet" href="../css/style.css?v=5">
+  <link rel="stylesheet" href="../css/mobile-controls.css">
+</head>
+<body class="no-scroll">
+
+  <div id="starfield"></div>
+
+  <div class="page-content game-page compact-page">
+    <header class="arcade-header game-arcade-header">
+      <a href="../index.html" class="arcade-logo-link">
+        <h1 class="arcade-logo small">SPACE ARCADE</h1>
+      </a>
+    </header>
+    <div class="game-hud">
+      <div>Level: <span class="value" id="level">1</span></div>
+      <div>⭐ <span class="value" id="stars">0</span></div>
+      <div>Target: <span class="value" id="target">3</span></div>
+      <div>Best: <span class="value" id="high-score">0</span></div>
+    </div>
+    <div class="game-canvas-wrap">
+      <canvas id="game-canvas" width="300" height="300"></canvas>
+    </div>
+    <div id="piece-tray"></div>
+    <p class="game-controls-hint">
+      Drag & drop pieces onto the board &nbsp;|&nbsp;
+      <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> Select piece &nbsp;|&nbsp;
+      <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> Move &nbsp;|&nbsp;
+      <kbd>Space</kbd> Place
+    </p>
+  </div>
+
+  <!-- Start Overlay -->
+  <div class="game-overlay" id="start-overlay">
+    <div class="overlay-title">Block Blast</div>
+    <p class="overlay-score">Place blocks, clear lines, earn ⭐ stars! 💥</p>
+    <div class="overlay-buttons">
+      <button class="btn btn-primary" id="start-btn" data-tip="🚀 Click to begin your mission!">Start Mission</button>
+    </div>
+  </div>
+
+  <!-- Level Complete Overlay -->
+  <div class="game-overlay hidden" id="level-overlay">
+    <div class="overlay-title">Level Complete!</div>
+    <p class="overlay-score" id="level-text">⭐ You earned <span class="highlight">3</span> stars!</p>
+    <div class="overlay-buttons">
+      <button class="btn btn-primary" id="next-btn" data-tip="🚀 On to the next level!">Next Level</button>
+    </div>
+  </div>
+
+  <!-- Game Over Overlay -->
+  <div class="game-overlay hidden" id="gameover-overlay">
+    <div class="overlay-title">Game Over</div>
+    <p class="overlay-score" id="gameover-text">You reached Level <span class="highlight">1</span></p>
+    <div class="overlay-buttons">
+      <button class="btn btn-primary" id="retry-btn" data-tip="💪 Don't give up! Try again!">Try Again</button>
+      <a href="../index.html" class="btn btn-secondary" data-tip="🏠 Go back and pick another game!">Back to Arcade</a>
+    </div>
+  </div>
+
+  <!-- Lightsaber Volume UI -->
+  <div id="lightsaber-volume">
+    <div class="hilt-btn"></div>
+    <div class="blade-container">
+      <div class="blade-glow"></div>
+      <input type="range" min="0" max="1" step="0.01" value="0.5" class="volume-slider">
+    </div>
+  </div>
+
+  <script src="../js/stars.js"></script>
+  <script src="../js/cursor.js"></script>
+  <script src="../js/audio.js"></script>
+  <script src="../js/volume.js"></script>
+  <script src="../js/tooltips.js"></script>
+  <script src="blockblast.js"></script>
+
+  <script src="../js/mobile-controls.js"></script>
+</body>
+</html>

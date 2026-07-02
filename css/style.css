@@ -1879,4 +1879,71 @@ a, button, select, .btn, .back-btn, .synth-btn, .game-card, .hilt-btn {
   cursor: pointer !important;
 }
 
+/* ===== Block Blast — Game Card Accent ===== */
+.game-card[data-game="blockblast"] {
+  --card-accent: #ff6b9d;
+  --card-accent-2: #ffd700;
+  --card-glow: 0 0 25px rgba(255, 107, 157, 0.15), 0 0 50px rgba(255, 215, 0, 0.05);
+}
+
+/* ===== Block Blast — Piece Tray ===== */
+#piece-tray {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  flex-shrink: 0;
+}
+
+.tray-slot {
+  background: var(--glass);
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  min-width: 80px;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  cursor: pointer !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.tray-slot:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--glass-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 16px rgba(0, 240, 255, 0.15);
+}
+
+.tray-slot.selected {
+  border-color: var(--cyan);
+  box-shadow: var(--glow-cyan);
+  background: rgba(0, 240, 255, 0.08);
+  transform: translateY(-4px) scale(1.05);
+}
+
+.tray-slot.empty {
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.tray-slot canvas {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  #piece-tray {
+    gap: 8px;
+  }
+  .tray-slot {
+    padding: 6px;
+    min-width: 60px;
+    min-height: 55px;
+  }
+}
+
 

@@ -544,6 +544,190 @@
     }
   }
 
+  // ==== BLOCK BLAST PREVIEW ====
+  function drawBlockBlast(canvas) {
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const T = 12;
+    const boardCols = 10;
+    const boardRows = 10;
+
+    ctx.fillStyle = BG;
+    ctx.fillRect(0, 0, W, H);
+
+    const offX = Math.floor((W - boardCols * T) / 2) - 30;
+    const offY = Math.floor((H - boardRows * T) / 2);
+
+    // Grid
+    ctx.strokeStyle = 'rgba(255,255,255,0.02)';
+    ctx.lineWidth = 0.5;
+    for (let x = 0; x <= boardCols; x++) {
+      ctx.beginPath(); ctx.moveTo(offX + x * T, offY); ctx.lineTo(offX + x * T, offY + boardRows * T); ctx.stroke();
+    }
+    for (let y = 0; y <= boardRows; y++) {
+      ctx.beginPath(); ctx.moveTo(offX, offY + y * T); ctx.lineTo(offX + boardCols * T, offY + y * T); ctx.stroke();
+    }
+
+    // Pre-placed obstacle blocks (grey)
+    const obstacles = [
+      [9,0],[9,1],[9,3],[9,4],[9,6],[9,7],[9,8],
+      [8,0],[8,4],[8,7],[8,8],
+      [7,3],[7,8],
+    ];
+    obstacles.forEach(([r, c]) => {
+      const x = offX + c * T;
+      const y = offY + r * T;
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.fillStyle = '#3a3a6e';
+      ctx.beginPath();
+      ctx.roundRect(x + 1, y + 1, T - 2, T - 2, 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // Placed colored blocks
+    const colors = {
+      I: '#00f0ff', O: '#ffd700', T: '#b44aff',
+      S: '#00ff88', Z: '#ff4444', L: '#ff8800',
+    };
+
+    const placed = [
+      // Almost-full bottom row (about to clear!)
+      { r: 9, c: 2, p: 'I' }, { r: 9, c: 5, p: 'S' }, { r: 9, c: 9, p: 'O' },
+      // Some scattered blocks
+      { r: 8, c: 1, p: 'T' }, { r: 8, c: 2, p: 'T' }, { r: 8, c: 3, p: 'T' },
+      { r: 8, c: 5, p: 'L' }, { r: 8, c: 6, p: 'L' },
+      { r: 7, c: 4, p: 'S' }, { r: 7, c: 5, p: 'S' }, { r: 7, c: 6, p: 'Z' }, { r: 7, c: 7, p: 'Z' },
+      { r: 6, c: 1, p: 'I' }, { r: 6, c: 2, p: 'I' }, { r: 6, c: 3, p: 'I' },
+    ];
+
+    placed.forEach(({ r, c, p }) => {
+      const x = offX + c * T;
+      const y = offY + r * T;
+      const color = colors[p];
+      ctx.save();
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 4;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.roundRect(x + 1, y + 1, T - 2, T - 2, 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = 'rgba(255,255,255,0.2)';
+      ctx.fillRect(x + 2, y + 2, T - 5, 1);
+      ctx.restore();
+    });
+
+    // Ghost piece being placed (L-shape)
+    const ghostBlocks = [[4,7],[5,7],[5,8],[5,9]];
+    ghostBlocks.forEach(([r, c]) => {
+      const x = offX + c * T;
+      const y = offY + r * T;
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = '#ff8800';
+      ctx.lineWidth = 1.5;
+      ctx.shadowColor = '#ff8800';
+      ctx.shadowBlur = 4;
+      ctx.beginPath();
+      ctx.roundRect(x + 1, y + 1, T - 2, T - 2, 2);
+      ctx.stroke();
+      ctx.fillStyle = '#ff8800';
+      ctx.globalAlpha = 0.12;
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // Piece tray on the right side
+    const trayX = offX + boardCols * T + 16;
+    const trayY = offY + 20;
+
+    // Tray slot 1: T-piece
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(trayX, trayY, 40, 28, 4);
+    ctx.stroke();
+    // T-piece blocks
+    [[0,0],[1,0],[2,0],[1,1]].forEach(([bc, br]) => {
+      ctx.save();
+      ctx.shadowColor = '#b44aff';
+      ctx.shadowBlur = 2;
+      ctx.fillStyle = '#b44aff';
+      ctx.beginPath();
+      ctx.roundRect(trayX + 6 + bc * 9, trayY + 4 + br * 9, 8, 8, 1);
+      ctx.fill();
+      ctx.restore();
+    });
+    ctx.restore();
+
+    // Tray slot 2: highlighted (selected)
+    ctx.save();
+    ctx.strokeStyle = '#00f0ff';
+    ctx.lineWidth = 1.5;
+    ctx.shadowColor = '#00f0ff';
+    ctx.shadowBlur = 6;
+    ctx.beginPath();
+    ctx.roundRect(trayX, trayY + 36, 40, 28, 4);
+    ctx.stroke();
+    // L-piece (selected, being placed)
+    [[0,0],[0,1],[0,2],[1,2]].forEach(([br, bc]) => {
+      ctx.save();
+      ctx.shadowColor = '#ff8800';
+      ctx.shadowBlur = 2;
+      ctx.fillStyle = '#ff8800';
+      ctx.beginPath();
+      ctx.roundRect(trayX + 6 + bc * 9, trayY + 40 + br * 9, 8, 8, 1);
+      ctx.fill();
+      ctx.restore();
+    });
+    ctx.restore();
+
+    // Tray slot 3: Square
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(trayX, trayY + 72, 40, 28, 4);
+    ctx.stroke();
+    [[0,0],[0,1],[1,0],[1,1]].forEach(([br, bc]) => {
+      ctx.save();
+      ctx.shadowColor = '#ffd700';
+      ctx.shadowBlur = 2;
+      ctx.fillStyle = '#ffd700';
+      ctx.beginPath();
+      ctx.roundRect(trayX + 10 + bc * 9, trayY + 76 + br * 9, 8, 8, 1);
+      ctx.fill();
+      ctx.restore();
+    });
+    ctx.restore();
+
+    // Star particles near the board (explosions)
+    const starColors = ['#ffd700', '#ffaa00', '#ff8800', '#fff'];
+    for (let i = 0; i < 8; i++) {
+      const angle = (Math.PI * 2 / 8) * i;
+      const dist = 10 + Math.random() * 8;
+      const sx = offX + 5 * T + Math.cos(angle) * dist;
+      const sy = offY + 9 * T + T / 2 + Math.sin(angle) * dist;
+      ctx.save();
+      ctx.globalAlpha = 0.4 + Math.random() * 0.4;
+      ctx.fillStyle = starColors[i % starColors.length];
+      ctx.shadowColor = ctx.fillStyle;
+      ctx.shadowBlur = 4;
+      ctx.beginPath();
+      ctx.arc(sx, sy, 1.5 + Math.random(), 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Stars counter label
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.font = '7px Outfit, sans-serif';
+    ctx.fillText('⭐ 5 / 8', trayX + 2, offY + 12);
+  }
+
   // ---- Render all previews ----
   function renderAll() {
     const pongCanvas = document.getElementById('preview-pong');
@@ -551,12 +735,14 @@
     const pacmanCanvas = document.getElementById('preview-pacman');
     const troopersCanvas = document.getElementById('preview-troopers');
     const tetrisCanvas = document.getElementById('preview-tetris');
+    const blockblastCanvas = document.getElementById('preview-blockblast');
 
     if (pongCanvas) drawPong(pongCanvas);
     if (snakeCanvas) drawSnake(snakeCanvas);
     if (pacmanCanvas) drawPacman(pacmanCanvas);
     if (troopersCanvas) drawTroopers(troopersCanvas);
     if (tetrisCanvas) drawTetris(tetrisCanvas);
+    if (blockblastCanvas) drawBlockBlast(blockblastCanvas);
   }
 
   // Render on load
@@ -566,3 +752,4 @@
     renderAll();
   }
 })();
+
